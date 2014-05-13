@@ -49,11 +49,20 @@ $vars = array(
 // Exécution du controler.
 ob_start();
 $executed = $controller->execute('controllers/', $vars);
-$echo = ob_get_clean();
 
 // Affichage de la vue.
 $content = $controller->show('views/', $view);
 
+// Page d'erreur si page de view et controller.
+if ($executed == FALSE && $content === FALSE)
+{
+	$controller = new ControllerManager('error', 'not_found');
+	$controller->execute('controllers/', $vars);
+	$content = $controller->show('views/', $view);
+}
 
+$echos = ob_get_clean();
 require('app/tpl/main.php');
+
+require('app/tpl/debug_area.php');
 ?>

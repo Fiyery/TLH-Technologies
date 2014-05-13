@@ -1,5 +1,0 @@
-<?php
-
-?>
-
-<footer>FOOTER</footer>

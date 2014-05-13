@@ -1,15 +1,15 @@
 <?php
-class Home
+class home
 {
 	public function default_action()
 	{
-		echo 'action par défaut';
 		$this->view->var_test = "Variable de template !";
+		Debug::show('Action par défaut');
 	}
 	
-	public function send()
+	public function action2()
 	{
-		echo 'action send';
+		Debug::show('Action 2');
 	}
 }
 ?>

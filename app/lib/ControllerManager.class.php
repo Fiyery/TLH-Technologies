@@ -38,8 +38,9 @@ class ControllerManager
 	 */
 	public function execute($dir, $params=NULL)
 	{
-		$dir = (substr($dir, -1) != '/') ? ($dir.'/') : ($dir);
+		$dir = (substr($dir, -1) != '/') ? ($dir.'/') : ($dir);		
 		$file = $dir.$this->_controller.'.php';
+		echo $file;
 		if (file_exists($file) == FALSE)
 		{
 			return FALSE;

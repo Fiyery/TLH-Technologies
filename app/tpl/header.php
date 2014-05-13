@@ -1,5 +1,0 @@
-<?php
-
-?>
-
-<header>HEADER</header>
