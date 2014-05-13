@@ -13,7 +13,7 @@ date_default_timezone_set('Europe/Paris');
 require ("app/lib/ClassLoader.class.php");
 $loader = new ClassLoader();
 $loader->set_ext('.class.php');
-$loader->add_dir('app/models/');
+$loader->add_dir('models/');
 $loader->add_dir('app/lib/');
 $loader->enable();
 
@@ -26,12 +26,34 @@ $base = Base::get_instance('UTF-8');
 $base->add_base($config->DB->host, $config->DB->name, $config->DB->user, $config->DB->pass);
 
 // Système de cache.
-$cache = Cache::get_instance('app/cache/');
+$cache = Cache::get_instance('app/tmp/');
 
 // Intitialisation des Dao.
 Dao::set_base($base);
 
-Debug::show(Menu::search());
+// Traitement particulier.
+$name = (isset($_GET['controller']) && empty($_GET['controller']) == FALSE) ? ($_GET['controller']) : ('home');
+$action = (isset($_GET['action']) && empty($_GET['action']) == FALSE) ? ($_GET['action']) : ('default_action');
+$controller = new ControllerManager($name, $action);
+
+// Gestion des paramètre à envoyer à la vue.
+$view = View::get_instance();
+
+// Définition des variables globales.
+$vars = array(
+	'conf' => $config,
+	'cache' => $cache,
+	'view' => $view
+);
+
+// Exécution du controler.
+ob_start();
+$executed = $controller->execute('controllers/', $vars);
+$echo = ob_get_clean();
+
+// Affichage de la vue.
+$content = $controller->show('views/', $view);
+
 
 require('app/tpl/main.php');
 ?>

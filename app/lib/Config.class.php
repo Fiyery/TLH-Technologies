@@ -3,12 +3,14 @@
  * Config est le manageur de paramètres.
  * @author Yoann Chaumin <yoann.chaumin@gmail.com>
  * @version 1.0
+ * @copyright 2011-2014 Yoann Chaumin
+ * @uses Singleton
  */
 class Config extends Singleton
 {
 	/**
 	 * Variable d'instance de singleton.
-	 * @var Base
+	 * @var Config
 	 */
 	protected static $_instance = NULL;
 	

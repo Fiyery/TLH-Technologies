@@ -4,6 +4,7 @@
  * @author Yoann Chaumin <yoann.chaumin@gmail.com>
  * @version 1.1
  * @copyright 2011-2014 Yoann Chaumin
+ * @uses Singleton
  */
 class Cache extends Singleton
 {	
@@ -101,7 +102,7 @@ class Cache extends Singleton
 	    {
 	    	throw new Exception('Invalid Arguments');
 	    }
-	    $this->_file = $name.'.ch';
+	    $this->_file = $name.'.tmp';
 	    if ($this->is_enabled())
 		{
 			$file = $this->_dir.$this->_file;

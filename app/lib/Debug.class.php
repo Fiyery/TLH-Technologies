@@ -3,6 +3,7 @@
  * Debug gère la gestion du debugage du site par les affichages de variable.
  * @author Yoann Chaumin <yoann.chaumin@gmail.com>
  * @version 1.0
+ * @copyright 2011-2014 Yoann Chaumin
  */
 class Debug 
 {

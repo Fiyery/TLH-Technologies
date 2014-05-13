@@ -4,6 +4,7 @@
  * @author Yoann Chaumin <yoann.chaumin@gmail.com>
  * @version 1.4
  * @copyright 2011-2014 Yoann Chaumin
+ * @uses Singleton
  */
 class Base extends Singleton
 {

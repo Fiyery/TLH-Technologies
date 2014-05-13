@@ -4,6 +4,7 @@
  * La classe qui hérite de Singleton doit posséder l'attribut "protected static $_instance = NULL".
  * @author Yoann Chaumin <yoann.chaumin@gmail.com>
  * @version 1.1
+ * @copyright 2011-2014 Yoann Chaumin
  */
 class Singleton 
 {	
