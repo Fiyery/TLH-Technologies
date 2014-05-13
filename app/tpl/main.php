@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<header>HEADER</header>
-		<nav>Menu</nav>
+		<?= $list_menu_links ?>
 		<?= $content ?>
 		<footer>FOOTER</footer>
 	</body>

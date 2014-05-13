@@ -24,7 +24,7 @@ class View extends Singleton
 	 * Retourne la liste des paramètres.
 	 * @return array
 	 */
-	public function get_list()
+	public function get()
 	{
 		return $this->_values;
 	}

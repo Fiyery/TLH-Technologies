@@ -9,6 +9,9 @@ ini_set('error_reporting',E_ALL);
 // Fuseau horaire français.
 date_default_timezone_set('Europe/Paris');
 
+// Capture des affichages parasites.
+ob_start();
+
 // Chargement de classes.
 require ("app/lib/ClassLoader.class.php");
 $loader = new ClassLoader();
@@ -31,35 +34,50 @@ $cache = Cache::get_instance('app/tmp/');
 // Intitialisation des Dao.
 Dao::set_base($base);
 
-// Traitement particulier.
-$name = (isset($_GET['controller']) && empty($_GET['controller']) == FALSE) ? ($_GET['controller']) : ('home');
-$action = (isset($_GET['action']) && empty($_GET['action']) == FALSE) ? ($_GET['action']) : ('default_action');
-$controller = new ControllerManager($name, $action);
-
 // Gestion des paramètre à envoyer à la vue.
 $view = View::get_instance();
+
+// Toolbox du site.
+$site = Site::get_instance();
 
 // Définition des variables globales.
 $vars = array(
 	'conf' => $config,
 	'cache' => $cache,
-	'view' => $view
+	'view' => $view,
+	'site' => $site
 );
 
-// Exécution du controler.
-ob_start();
-$executed = $controller->execute('controllers/', $vars);
+// Définition générale du manager de controllers.
+$controller = ControllerManager::get_instance();
+$controller->set_params($vars);
+$controller->set_controllers_dir('controllers/');
+$controller->set_views_dir('views/');
+$controller->set_view($view);
 
-// Affichage de la vue.
-$content = $controller->show('views/', $view);
+// Traitement particulier.
+$name = (isset($_GET['controller']) && empty($_GET['controller']) == FALSE) ? ($_GET['controller']) : ('home');
+$action = (isset($_GET['action']) && empty($_GET['action']) == FALSE) ? ($_GET['action']) : ('default_action');
+$controller->load($name, $action);
 
-// Page d'erreur si page de view et controller.
+// Exécution du controller.
+$executed = $controller->execute();
+
+// Récupération du contenu de la vue.
+$content = $controller->show();
+
+// Page d'erreur si page de view et controller n'existe pas.
 if ($executed == FALSE && $content === FALSE)
 {
-	$controller = new ControllerManager('error', 'not_found');
-	$controller->execute('controllers/', $vars);
-	$content = $controller->show('views/', $view);
+	$controller->load('error', 'not_found');
+	$controller->execute();
+	$content = $controller->show();
 }
+
+// Initialisation du controller du menu.
+$controller->load('navigation_menu', 'init');
+$controller->execute();
+$list_menu_links = $controller->show();
 
 $echos = ob_get_clean();
 require('app/tpl/main.php');
