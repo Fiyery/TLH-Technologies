@@ -1,5 +1,5 @@
 $(function(){
-	setTimeout('load_ajax_navigation()',1);
+	setTimeout('load_ajax_navigation()', 1);
 });
 
 function load_ajax_navigation() {
@@ -19,7 +19,7 @@ function load_ajax_navigation() {
 	};
 	
 	ajax.change_address = function(url){
-		window.history.pushState('','',url);
+		window.history.pushState('', '', url);
 	};
 	
 	ajax.is_ancre = function(url){
@@ -28,7 +28,7 @@ function load_ajax_navigation() {
 	
 	ajax.load = function(url){
 		$.ajax({
-			url: ajax.get_root()+'app/ajax/navigation_ajax.php',
+			url: ajax.get_root() + 'app/ajax/navigation_ajax.php',
 			type: 'post',
 			dataType: 'html',
 			async: false,
@@ -37,16 +37,16 @@ function load_ajax_navigation() {
 			}
 		}).done(function(data){
 			ajax.change_address(url);
-			$(ajax.content_selector).fadeOut(function(){
+			$(ajax.content_selector).fadeOut(function() {
 				$(this).empty().append(data).fadeIn(300);
 			});
-		}).fail(function(){
+		}).fail(function() {
 			alert('fail');
 		});
 	};
 	
 	ajax.init = function(){
-		$('a').on('click',function(){
+		$('a').on('click', function() {
 			if (!ajax.is_ancre($(this).attr('href'))) {
 				ajax.load($(this).attr('href'));
 			}
