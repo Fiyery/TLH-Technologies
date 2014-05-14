@@ -16,7 +16,7 @@
 			</div>
 		
 		<?php endforeach; ?>
-	
+
 	<?php endforeach; ?>
 
 </nav>

@@ -30,7 +30,7 @@
 					<div class="content">
 						<div class="mainlink">
 							<div class="icon home"></div>
-							<span class="title">Accueil</span>
+							<a class="title" href='<?= $root_www ?>'>Accueil</span>
 						</div>
 						<div class="mainlink">
 							<div class="icon contact"></div>

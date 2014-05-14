@@ -30,6 +30,16 @@ class Config extends Singleton
 	}
 	
 	/**
+	 * Vérifie l'existance d'une variable.
+	 * @param string $name Nom de la variable.
+	 * @return boolean
+	 */
+	public function __isset($name)
+	{
+		return isset($this->_json->$name);
+	}
+	
+	/**
 	 * Intialise les paramètres.
 	 * @param string $file Adresse du ficheir de configuration.
 	 * @return boolean

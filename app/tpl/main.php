@@ -2,16 +2,16 @@
 <html lang="fr" class="no-js">
 	<head>
 		<?php
-			include '/views/partial/_head_meta.php';
-			include '/views/partial/_head_css.php';
-			include '/views/partial/_head_js.php';
+			include 'partial/_head_meta.php';
+			include 'partial/_head_css.php';
+			include 'partial/_head_js.php';
 		?>
 		<title>TLH Technologies - Internet de demain</title>
 	</head>
 	<body>
 		<div id="Wrapper">
 			<?php
-				include '/views/partial/_header.php';
+				include 'partial/_header.php';
 			?>
 			<div id="MainBody" class="container">
 				<div id="MainRow" class="row">
@@ -24,8 +24,8 @@
 			</div>
 		</div>
 		<?php
-			include '/views/partial/_footer.php';
-			include '/views/partial/_foot_js.php';
+			include 'partial/_footer.php';
+			include 'partial/_foot_js.php';
 		?>
 	</body>
 </html>

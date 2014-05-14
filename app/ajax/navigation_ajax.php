@@ -12,6 +12,9 @@ date_default_timezone_set('Europe/Paris');
 // Capture des affichages parasites.
 ob_start();
 
+// Contrainte de dossier : Déplacement à la racine du site.
+chdir('../../');
+
 // Chargement de classes.
 require ("app/lib/ClassLoader.class.php");
 $loader = new ClassLoader();
@@ -57,8 +60,37 @@ $controller->set_views_dir('views/');
 $controller->set_view($view);
 
 // Traitement particulier.
-$name = (isset($_GET['controller']) && empty($_GET['controller']) == FALSE) ? ($_GET['controller']) : ('home');
-$action = (isset($_GET['action']) && empty($_GET['action']) == FALSE) ? ($_GET['action']) : ('default_action');
+if (isset($_REQUEST['url']) == FALSE)
+{
+	$name = 'error';
+	$action = 'not_found';
+}
+else
+{
+	$url = str_replace($site->get_root(), '', $_REQUEST['url']);
+	preg_match('#([^\/]+)\/(([^\/]+)\/)?$#', $url, $match);
+	$count = count($match);
+	if ($count == 0)
+	{
+		$name = 'home';
+		$action = 'default_action';
+	}
+	elseif ($count == 2)
+	{
+		$name = $match[1];
+		$action = 'default_action';
+	}
+	elseif ($count == 4)
+	{
+		$name = $match[1];
+		$action = $match[3]; 
+	}
+	else 
+	{
+		$name = 'error';
+		$action = 'not_found';
+	}
+}
 $controller->load($name, $action);
 
 // Exécution du controller.
@@ -75,24 +107,8 @@ if ($executed == FALSE && $content === FALSE)
 	$content = $controller->show();
 }
 
-// Initialisation du controller du menu.
-$controller->load('navigation_menu', 'init');
-$controller->execute();
-$list_menu_links = $controller->show();
-
-$list = $view->get();
-foreach ($list as $name => $value)
-{
-	$$name = $value;
-}
-unset($list);
-
+// Récupération des affichages parasites.
 $echos = ob_get_clean();
-require('app/tpl/main.php');
 
-// Affichage des éléments parasites.
-if (isset($config->Debug) && isset($config->Debug->print_area) && $config->Debug->print_area == 1)
-{
-	require('app/tpl/debug_area.php');
-}
+echo $content;
 ?>
