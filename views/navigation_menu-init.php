@@ -1,23 +1,25 @@
-<nav>
-	<?php foreach ($list_links as $l) :?>
+<ul class="categories">
+
+	<?php foreach ($list_links as $item) :?>
 	
-		<div style='font-size:30px'>
-			<a href='<?= $l['href'] ?>'>
-				<?= $l['name'] ?>
-			</a>
-		</div>
-		
-		<?php foreach ($l['list'] as $sl) :?>
-		
-			<div style='font-size:16px'>
-				<a href='<?= $sl['href'] ?>'>
-					<?= $sl['name'] ?>
-				</a>
+		<li class="categorie">
+			<a href='<?= $item['href'] ?>'><?= $item['name'] ?></a>
+			<div class="onHover">
+				<ul class="subcategories">
+				
+					<?php foreach ($item['list'] as $sub_item) :?>
+					
+						<li class="subcategorie">
+							<a href='<?= $sub_item['href'] ?>'><?= $sub_item['name'] ?></a>
+						</li>
+					
+					<?php endforeach; ?>
+					
+				</ul>
 			</div>
 		
-		<?php endforeach; ?>
+		</li>
 
 	<?php endforeach; ?>
-
-</nav>
-
+	
+</ul>
