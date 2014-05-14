@@ -30,15 +30,15 @@
 					<div class="content">
 						<div class="mainlink">
 							<div class="icon home"></div>
-							<a class="title" href='<?= $root_www ?>'>Accueil</span>
+							<a class="title" href='<?= $root_www ?>'>Accueil</a>
 						</div>
 						<div class="mainlink">
 							<div class="icon contact"></div>
-							<span class="title">Contacter</span>
+							<a class="title" href='<?= $root_www ?>contact/'>Contacter</a>
 						</div>
 						<div class="mainlink">
 							<div class="icon help"></div>
-							<span class="title">Aide</span>
+							<a class="title" href='<?= $root_www ?>aide/'>Aide</a>
 						</div>
 						<div class="mainlink">
 							<div class="icon plus"></div>

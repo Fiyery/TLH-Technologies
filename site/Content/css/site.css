@@ -17,9 +17,9 @@
 /*	Main links	*/
 .mainlink	{	position: relative; display: inline-block; height: 36px; width: 24%; padding: 6px 0px; text-align: center; cursor: pointer;	}
 .mainlink > *	{	vertical-align: top;	}
-.mainlink span.title	{	display: none; font-size: 20px; color: #eeeeee;	}
+.mainlink a.title	{	display: none; font-size: 20px; color: #eeeeee;	}
 .mainlink:hover	{	background: #ffffff;	}
-.mainlink:hover span.title	{	color: #ff9700;	}
+.mainlink:hover a.title	{	color: #ff9700;	}
 .mainlink div.onHover	{	position: absolute; top: 100%; left: -1px; right: -1px; border: 1px solid #162d3f; border-top: none; z-index: 99;
 							background: url("../img/bg_menu.png");	}
 
@@ -52,7 +52,7 @@ strong	{	 color: #ff9700;	}
 
 /*									Surcharge md - width < 1200px						   */
 @media (min-width: 992px)	{
-	.mainlink span.title	{	display: inline;	}
+	.mainlink a.title	{	display: inline;	}
 }
 
 /*									Surcharge lg - width > 1200px						   */
