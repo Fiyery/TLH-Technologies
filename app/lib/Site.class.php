@@ -84,13 +84,21 @@ class Site extends Singleton
 			return self::$_root[$format];
 		}
 		$root = dirname($_SERVER['SCRIPT_FILENAME']);
-		while(! file_exists($root . '/.root') && $root != $_SERVER['DOCUMENT_ROOT'])
+		if (substr($_SERVER['DOCUMENT_ROOT'], -1) == '/') 
+		{
+			$document_root = substr($_SERVER['DOCUMENT_ROOT'], 0, -1);
+		}
+		else 
+		{
+			$document_root = $_SERVER['DOCUMENT_ROOT'];
+		}
+		while(! file_exists($root . '/.root') && $root != $document_root)
 		{
 			$root = dirname($root);
 		}
 		if ($format == self::URL)
 		{
-			$root = str_replace($_SERVER['DOCUMENT_ROOT'], 'http://' . $_SERVER['SERVER_NAME'], $root);
+			$root = str_replace($document_root, 'http://' . $_SERVER['SERVER_NAME'], $root);
 			$root = (substr($root, - 1) != '/') ? ($root . '/') : ($root);
 			self::$_root[$format] = $root;
 		}
