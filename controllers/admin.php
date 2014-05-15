@@ -40,14 +40,8 @@ class admin
 		Debug::show($menus);
 		Debug::show($sous_menus);
 		
-		foreach ($menus as $m)
-		{
-			$link_list[] = array(
-				'name' => $m->name,
-				'order'=> $m->order,
-				'id' => $m->id
-			);
-		}
+		$this->view->menus = $menus;
+		$this->view->sous_menus = $sous_menus;
 	}
 	
 	public function deconnection()
