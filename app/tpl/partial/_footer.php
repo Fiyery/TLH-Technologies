@@ -5,7 +5,8 @@
 				<div class="display">
 					<div class="begin"></div>
 					<div class="content">
-						<p>&copy; 2014 TLH Technologies</p>
+						<span>&copy; 2014 TLH Technologies</span>
+						<a href='<?= $root_www ?>admin/'>Administration</a>
 					</div>
 					<div class="end"></div>
 				</div>

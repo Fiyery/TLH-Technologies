@@ -17,7 +17,12 @@
 				</div>
 			</div>
 			<div class="col-xs-4">
-				<div class="icon search"><input type="text"/></div>
+				<div id="SearchBox">
+					<input class="data" type="text"/>
+					<input class="hide" type="text" disabled="disabled" value="<?= $root_www ?>recherche/"/>
+					<div class="icon search"></div>
+					<a href="<?= $root_www ?>recherche/">&nbsp;</a>
+				</div>
 			</div>
 		</div>
 	</div>
