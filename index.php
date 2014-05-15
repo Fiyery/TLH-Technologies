@@ -78,11 +78,12 @@ if ($executed == FALSE && $content === FALSE)
 	$controller->execute();
 	$content = $controller->show();
 }
+$view->content = $content;
 
 // Initialisation du controller du menu.
 $controller->load('navigation_menu', 'init');
 $controller->execute();
-$list_menu_links = $controller->show();
+$view->list_menu_links = $controller->show();
 
 // Gestion des messages serveurs.
 $msg_list = $site->list_messages();
@@ -90,13 +91,20 @@ if (empty($msg_list) == FALSE)
 {
 	$view->msg_list = $msg_list;
 }
-unset($msg_list);
+
+// Suppression des conflits de variables entre index et view.
+$vars = array_keys(get_defined_vars());
+foreach ($vars as $var) 
+{
+	if ($var != 'view')
+	unset($$var);
+}
+
 $list = $view->get();
 foreach ($list as $name => $value)
 {
 	$$name = $value;
 }
-unset($list);
 
 $echos = ob_get_clean();
 require('app/tpl/main.php');
