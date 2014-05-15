@@ -1,5 +1,7 @@
 <?php if (isset($msg_list)) : ?>
 	<div id='msg_box'>
-		<?= $msg_list ?>
+		<?php foreach ($msg_list as $m) : ?>
+			<div class='<?= $m['class'] ?>'><?= $m['msg'] ?></div>
+		<?php endforeach; ?>
 	</div>
 <?php endif; ?>

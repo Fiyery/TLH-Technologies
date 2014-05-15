@@ -303,7 +303,7 @@ class Site extends Singleton
 	
 	/**
 	 * Retourne les éventuels messages d'information stockés et les supprime.
-	 * @return string
+	 * @return array
 	 */
 	public function list_messages()
 	{
@@ -311,10 +311,10 @@ class Site extends Singleton
 		{
 			return NULL;
 		}
-		$str = "";
+		$list = array();
 		foreach($this->_session->__messages as $message => $type)
 		{
-			$str .= $this->format($message, $type);
+			$str[] = $this->format($message, $type);
 		}
 		$this->clean_messages();
 		return $str;
@@ -332,7 +332,7 @@ class Site extends Singleton
 	 * Parse un message en HTML.
 	 * @param string $message Message à afficher.
 	 * @param int $type Type de message parmi les constantes ALERT_*.
-	 * @return string Message parsé.
+	 * @return array Message parsé.
 	 */
 	private function format($message, $type = self::ALERT_INFO)
 	{
@@ -363,7 +363,7 @@ class Site extends Singleton
 				$class = 'alert_info';
 			}
 		}
-		return '<div class="' . $class . '">' . $message . '</div>';
+		return array('class'=>$class, 'msg'=>$message);
 	}
 
 	/**
