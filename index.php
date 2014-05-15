@@ -37,6 +37,9 @@ Dao::set_base($base);
 // Toolbox du site.
 $site = Site::get_instance();
 
+// Toolbox des requêtes.
+$req = Request::get_instance();
+
 // Gestion des paramètre à envoyer à la vue.
 $view = View::get_instance();
 $view->root_www = $site->get_root();
@@ -46,7 +49,8 @@ $vars = array(
 	'conf' => $config,
 	'cache' => $cache,
 	'view' => $view,
-	'site' => $site
+	'site' => $site,
+	'req' => $req
 );
 
 // Définition générale du manager de controllers.
@@ -80,6 +84,13 @@ $controller->load('navigation_menu', 'init');
 $controller->execute();
 $list_menu_links = $controller->show();
 
+// Gestion des messages serveurs.
+$msg_list = $site->list_messages();
+if (empty($msg_list) == FALSE)
+{
+	$view->msg_list = $msg_list;
+}
+unset($msg_list);
 $list = $view->get();
 foreach ($list as $name => $value)
 {
