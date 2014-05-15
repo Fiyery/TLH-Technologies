@@ -3,7 +3,10 @@ class admin
 {
 	public function default_action()
 	{
-		$this->session->close();
+		if ($this->session->is_open())
+		{
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
 	}
 	
 	public function panel()
@@ -29,15 +32,16 @@ class admin
 				$this->site->redirect($this->site->get_root().'admin/');
 			}
 			$this->session->open($admins[0]);
+			$this->site->add_message("Connexion réussie", Site::ALERT_OK);
 		}
-		$menus = Menu::search();
-		$sous_menus = Sous_Menu::search();
-		$link_list = array();
-		foreach ($menu as $m)
+		$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+		$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+		foreach ($menus as $m)
 		{
 			$link_list[] = array(
-				'name' => $l->name,
-				'order'
+				'name' => $m->name,
+				'order'=> $m->order,
+				'id' => $m->id
 			);
 		}
 	}
