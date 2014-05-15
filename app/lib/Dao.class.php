@@ -335,14 +335,14 @@ abstract class Dao
 			{
 				$order['ASC'] = array($order['ASC']);
 			}
-			$sql .= ' ORDER BY '.implode(' ASC, ',$order['ASC']).' ASC';
+			$sql .= ' ORDER BY `'.implode('` ASC, `',$order['ASC']).'` ASC';
 			if (isset($order['DESC']))
 			{
 				if (is_array($order['DESC']) == FALSE)
 				{
 					$order['DESC'] = array($order['DESC']);
 				}
-				$sql .= ','.implode(' DESC, ',$order['DESC']).' DESC';
+				$sql .= ', `'.implode('` DESC, `',$order['DESC']).'` DESC';
 			}
 		}
 		elseif (isset($order['DESC']))
@@ -351,7 +351,7 @@ abstract class Dao
 			{
 				$order['DESC'] = array($order['DESC']);
 			}
-			$sql .= ' ORDER BY '.implode(' DESC, ',$order['DESC']).' DESC';
+			$sql .= ' ORDER BY `'.implode('` DESC, `',$order['DESC']).'` DESC';
 		}
 		// Limite du nombre d'enregistrements.
 		$sql .= ($begin !== NULL && $end !== NULL) ? (' LIMIT '.$begin.','.($end-$begin).';') : (';');
