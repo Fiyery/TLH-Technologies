@@ -68,7 +68,7 @@ strong	{	 color: #ff9700;	}
 /*	Page 	*/
 html	{	height: 100%;	}
 body	{	position: relative; height: 100%; font-size: 12px;
-			color: #162d3f; background-color: #eeeeee;	}
+			color: #162d3f; background-color: #6794d2;	}
 
 /*	Contenaire	*/
 #Wrapper	{	min-height: 100%; height: auto; margin: 0px 0px -24px; padding: 38px 0px 24px;	}
