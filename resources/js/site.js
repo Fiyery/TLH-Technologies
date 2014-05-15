@@ -56,3 +56,17 @@ function load_ajax_navigation() {
 	
 	ajax.init();
 };
+
+$(document).ready(function() {
+	$("#SearchBox .icon.search").click(function() {
+		var uri = $("#SearchBox .hide").val() + "?keywords=" + encodeURIComponent($("#SearchBox .data").val());
+		$("#SearchBox a").attr("href", uri);
+		$("#SearchBox a").click();
+	});
+	
+	$("#SearchBox .data").keyup(function(e) {
+		if(e.keyCode == 13) {
+			$("#SearchBox .icon.search").click();
+		}
+	});
+});
