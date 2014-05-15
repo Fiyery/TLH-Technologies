@@ -26,10 +26,14 @@ $config->set_json('app/var/config.json');
 
 // Base de données.
 $base = Base::get_instance('UTF-8');
-$base->add_base($config->DB->host, $config->DB->name, $config->DB->user, $config->DB->pass);
+$base->add_base($config->db->host, $config->db->name, $config->db->user, $config->db->pass);
 
 // Système de cache.
 $cache = Cache::get_instance('app/tmp/');
+if (isset($config->cache) && isset($config->cache->enable) && $config->cache->enable == 1)
+{
+	$cache->enable();
+}
 
 // Intitialisation des Dao.
 Dao::set_base($base);
@@ -39,6 +43,9 @@ $site = Site::get_instance();
 
 // Toolbox des requêtes.
 $req = Request::get_instance();
+
+// Toolbox de la session.
+$session = Session::get_instance();
 
 // Gestion des paramètre à envoyer à la vue.
 $view = View::get_instance();
@@ -50,7 +57,8 @@ $vars = array(
 	'cache' => $cache,
 	'view' => $view,
 	'site' => $site,
-	'req' => $req
+	'req' => $req,
+	'session' => $session
 );
 
 // Définition générale du manager de controllers.
@@ -94,10 +102,12 @@ if (empty($msg_list) == FALSE)
 
 // Suppression des conflits de variables entre index et view.
 $vars = array_keys(get_defined_vars());
-foreach ($vars as $var) 
+foreach ($vars as $name) 
 {
-	if ($var != 'view')
-	unset($$var);
+	if ($name != 'view' && $name != 'config')
+	{
+		unset($$name);
+	}
 }
 
 $list = $view->get();
@@ -110,7 +120,7 @@ $echos = ob_get_clean();
 require('app/tpl/main.php');
 
 // Affichage des éléments parasites.
-if (isset($config->Debug) && isset($config->Debug->print_area) && $config->Debug->print_area == 1)
+if (isset($config->debug) && isset($config->debug->print_area) && $config->debug->print_area == 1)
 {
 	require('app/tpl/debug_area.php');
 }
