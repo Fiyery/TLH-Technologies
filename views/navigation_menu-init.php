@@ -7,10 +7,10 @@
 			<div class="onHover">
 				<ul class="subcategories">
 				
-					<?php foreach ($item['list'] as $sub_item) :?>
+					<?php foreach ($item['list'] as $sous_item) :?>
 					
 						<li class="subcategorie">
-							<a href='<?= $sub_item['href'] ?>'><?= $sub_item['name'] ?></a>
+							<a href='<?= $sous_item['href'] ?>'><?= $sous_item['name'] ?></a>
 						</li>
 					
 					<?php endforeach; ?>

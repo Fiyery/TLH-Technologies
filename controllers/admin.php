@@ -37,18 +37,21 @@ class admin
 		$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
 		$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
 		
-		// CONFIG  = "debug" : { "print_area" : 1 }
 		Debug::show($menus);
 		Debug::show($sous_menus);
 		
-		foreach ($menus as $m)
+		$this->view->menus = $menus;
+		$this->view->sous_menus = $sous_menus;
+	}
+	
+	public function deconnection()
+	{
+		if ($this->session->is_open())
 		{
-			$link_list[] = array(
-				'name' => $m->name,
-				'order'=> $m->order,
-				'id' => $m->id
-			);
+			$this->session->close();
+			$this->site->add_message("Vous avez été déconnecté", Site::ALERT_OK);
 		}
+		$this->site->redirect($this->site->get_root().'admin/');
 	}
 }
 ?>

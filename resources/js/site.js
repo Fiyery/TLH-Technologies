@@ -4,7 +4,7 @@ $(function(){
 
 function load_ajax_navigation() {
 	var ajax = {};
-	ajax.content_selector = '#MainBody .content';
+	ajax.content_selector = '#MainContent';
 	ajax.localhost_dir = 'TLH-Technologies/';
 	
 	ajax.get_root = function(){
