@@ -1,31 +1,62 @@
-<?php if (isset($msg_list)) : ?>
-	<div id='msg_box'>
-		<?php foreach ($msg_list as $m) : ?>
-			<div class='<?= $m['class'] ?>'><?= $m['msg'] ?></div>
-		<?php endforeach; ?>
-	</div>
-<?php endif; ?>
-
 <?php
-	$success_list = "<span>test</span>";
-	$error_list = "<span>test</span>";
-	$info_list = "<span>test</span>";
+	$success_list = array();
+	$error_list = array();
+	$info_list = array();
+
+	if (isset($msg_list)) {
+		foreach ($msg_list as $item) {
+			switch($item['class'])
+			{
+				case 'alert_info':
+				{
+					array_push($info_list, $item['msg']);
+					break;
+				}
+				case 'alert_ok':
+				{
+					array_push($success_list, $item['msg']);
+					break;
+				}
+				case 'alert_warning':
+				{
+					array_push($info_list, $item['msg']);
+					break;
+				}
+				case 'alert_error':
+				{
+					array_push($error_list, $item['msg']);
+					break;
+				}
+				default:
+				{
+					array_push($info_list, $item['msg']);
+					break;
+				}
+			}
+		}
+	}
 ?>
 
-<?php if (isset($success_list)) : ?>
+<?php if (isset($success_list) && sizeof($success_list) > 0) : ?>
 	<div class='success_box'>
-		<?= $success_list ?>
+		<?php while (list($key, $value) = each($success_list)) :?>
+			<p><?= $value ?></p>
+		<?php endwhile; ?>
 	</div>
 <?php endif; ?>
 
-<?php if (isset($error_list)) : ?>
+<?php if (isset($error_list) && sizeof($error_list) > 0) : ?>
 	<div class='error_box'>
-		<?= $error_list ?>
+		<?php while (list($key, $value) = each($error_list)) :?>
+			<p><?= $value ?></p>
+		<?php endwhile; ?>
 	</div>
 <?php endif; ?>
 
-<?php if (isset($info_list)) : ?>
+<?php if (isset($info_list) && sizeof($info_list) > 0) : ?>
 	<div class='info_box'>
-		<?= $info_list ?>
+		<?php while (list($key, $value) = each($info_list)) :?>
+			<p><?= $value ?></p>
+		<?php endwhile; ?>
 	</div>
 <?php endif; ?>

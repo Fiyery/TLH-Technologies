@@ -108,8 +108,6 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #MainRow	{	min-height: 100%; padding-top: 8px;	}
 
 /*	Contenu principal	*/
-#MainMenu	{	min-height: 100%; padding: 0px;	}
-
 #MainContent	{	min-height: 100%; padding: 0px;	}
 #MainContent .content,
 #MainContent .success_box,

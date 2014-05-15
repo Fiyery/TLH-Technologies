@@ -37,7 +37,6 @@ class admin
 		$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
 		$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
 		
-		// CONFIG  = "debug" : { "print_area" : 1 }
 		Debug::show($menus);
 		Debug::show($sous_menus);
 		
@@ -49,6 +48,16 @@ class admin
 				'id' => $m->id
 			);
 		}
+	}
+	
+	public function deconnection()
+	{
+		if ($this->session->is_open())
+		{
+			$this->session->close();
+			$this->site->add_message("Vous avez été déconnecté", Site::ALERT_OK);
+		}
+		$this->site->redirect($this->site->get_root().'admin/');
 	}
 }
 ?>

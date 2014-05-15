@@ -19,9 +19,7 @@
 						<?php
 							include 'partial/_msg_box.php';
 						?>
-						<div class="content">
-							<?= $content ?>
-						</div>
+						<?= $content ?>
 					</div>
 				</div>
 			</div>
