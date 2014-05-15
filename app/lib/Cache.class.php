@@ -147,7 +147,7 @@ class Cache extends Singleton
 	 * @param mixed $value Valeur de la variable.
 	 * @return boolean
 	 */
-	public function add($name,$value)
+	public function add($name, $value)
 	{
 		if ($this->_file != NULL)
 		{
