@@ -39,11 +39,19 @@ ul.categories li.categorie	{	position: relative;	}
 ul.categories li.categorie div.onHover	{	position: absolute; top: 0px; left: 100%; width: 150px;	}
 ul.subcategories	{	 position: absolute; top: 100%; left: 0px; right: 0px; border: 1px solid #ff9700; border-top: none; background: url("../img/bg_menu.png") repeat repeat top left;	}
 
+/*	Forms	*/
+form .line	{	text-align: right;	}
+
+/*	Center content	*/
+.center	{	margin: 0px auto;	}
+.center.large	{	width: 350px;	}
+
 /*	Jumbotron	*/
 .jumbotron .container .row > div	{	padding: 0px;	}
 
 /*	Text	*/
 strong	{	 color: #ff9700;	}
+h1	{	margin: 4px 0px 8px; font-size: 24px;	}
 
 /*									Surcharge sm - width < 992px						   */
 @media (min-width: 768px)	{
@@ -79,7 +87,8 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #SearchBox	{	position: relative; padding: 6px 36px 6px 6px;	}
 #SearchBox .data	{	width: 100%;	}
 #SearchBox .icon.search	{	position: absolute; top: 0px; bottom: 0px; right: 6px; background-position: center center; cursor: pointer;	}
-#SearchBox a, #SearchBox .hide	{	display: none;	}
+#SearchBox a,
+#SearchBox .hide	{	display: none;	}
 
 /*	Bannière	*/
 #Banner	{	margin: 0px; padding: 0px; background: url("../img/bg_banner.png") repeat repeat top left #6794d2;	}
@@ -102,7 +111,14 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #MainMenu	{	min-height: 100%; padding: 0px;	}
 
 #MainContent	{	min-height: 100%; padding: 0px;	}
-#MainContent .content	{	margin: 0px 0px 16px; padding: 8px 16px; text-align: justify; border: 1px solid #ff9700; background: #ffffff;	}
+#MainContent .content,
+#MainContent .success_box,
+#MainContent .error_box,
+#MainContent .info_box	{	margin: 0px 0px 16px; padding: 8px 16px; text-align: justify; background: #ffffff;	}
+#MainContent .content	{	border: 1px solid #ff9700; color: #333333;	}
+#MainContent .success_box	{	border: 1px solid #00db39; color: #00db39;	}
+#MainContent .error_box	{	border: 1px solid #ff2300; color: #ff2300;	}
+#MainContent .info_box	{	border: 1px solid #0c5aa6; color: #0c5aa6;	}
 
 /*	Pied de page	*/
 #Footer	{	margin: 0px; padding: 0px; background: url("../img/bg_banner.png") repeat repeat top left #6794d2;	}
