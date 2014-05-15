@@ -68,10 +68,10 @@ strong	{	 color: #ff9700;	}
 /*	Page 	*/
 html	{	height: 100%;	}
 body	{	position: relative; height: 100%; font-size: 12px;
-			color: #162d3f; background-color: #6794d2;	}
+			color: #162d3f;  background: url("../img/bg_body.png") repeat repeat top left #6794d2;	}
 
 /*	Contenaire	*/
-#Wrapper	{	min-height: 100%; height: auto; margin: 0px 0px -24px; padding: 38px 0px 24px;	}
+#Wrapper	{	min-height: 100%; height: auto; margin: 0px 0px -24px; padding: 36px 0px 24px;	}
 
 /*	Ligne d'Entête */
 #HeaderRow	{	position: absolute; top: 0px; left: 0px; right: 0px; z-index: 20; height: 36px; margin: 0px; padding: 0px; background: #162d3f;	}
@@ -82,7 +82,7 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #SearchBox a, #SearchBox .hide	{	display: none;	}
 
 /*	Bannière	*/
-#Banner	{	margin: 0px; padding: 0px; background: url("../img/bg_banner.png") repeat repeat top left;	}
+#Banner	{	margin: 0px; padding: 0px; background: url("../img/bg_banner.png") repeat repeat top left #6794d2;	}
 #Banner .display.logo	{	height: 96px;	}
 #Banner .display.logo .begin	{	width: 18px;	}
 #Banner .display.logo .end	{	width: 48px;	}
@@ -105,11 +105,17 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #MainContent .content	{	margin: 0px 0px 16px; padding: 8px 16px; text-align: justify; border: 1px solid #ff9700; background: #ffffff;	}
 
 /*	Pied de page	*/
-#Footer	{	margin: 0px; padding: 0px; background: url("../img/bg_banner.png") repeat repeat top left;	}
+#Footer	{	margin: 0px; padding: 0px; background: url("../img/bg_banner.png") repeat repeat top left #6794d2;	}
 #Footer .display	{	height: 24px;	}
 #Footer .display .begin,
 #Footer .display .end	{	width: 12px;	}
 #Footer .display .begin	{	background-image: url("../img/elements/display/footer/begin.png");	}
-#Footer .display .content	{	left: 12px; right: 12px; background-image: url("../img/elements/display/footer/bg.png");	}
+#Footer .display .content	{	left: 12px; right: 12px; text-align: center; background-image: url("../img/elements/display/footer/bg.png");	}
 #Footer .display .end	{	background-image: url("../img/elements/display/footer/end.png");	}
-#Footer p	{	line-height: 24px; margin: 0px; text-align: center; font-style: italic; font-size: smaller; color: #eeeeee;	}
+#Footer span,
+#Footer a	{	display: inline-block; line-height: 24px; padding-left: 16px; font-style: italic; font-size: smaller;	}
+#Footer *:first-child	{	padding-left: 0px;	}
+#Footer span	{	color: #cccccc;	}
+#Footer a,
+#Footer a:visited	{	color: #aaaaaa;	}
+#Footer a:hover	{	color: #ffffff;	}
