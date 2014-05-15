@@ -36,10 +36,17 @@ function load_ajax_navigation() {
 				url: url
 			}
 		}).done(function(data){
-			ajax.change_address(url);
+			// Si redirection traitement particulier.
+			var page = $('<div></div>').html(data);
+			var content = page.children().find(ajax.content_selector);
+			if (content.length > 0) {
+				data = content.html();
+				url = page.constructor.ajaxSettings.url;
+			}
 			$(ajax.content_selector).fadeOut(function() {
 				$(this).empty().append(data).fadeIn(300);
 			});
+			ajax.change_address(url);
 		}).fail(function() {
 			alert('fail');
 		});
