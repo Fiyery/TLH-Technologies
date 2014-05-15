@@ -36,6 +36,11 @@ class admin
 		}
 		$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
 		$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+		
+		// CONFIG  = "debug" : { "print_area" : 1 }
+		Debug::show($menus);
+		Debug::show($sous_menus);
+		
 		foreach ($menus as $m)
 		{
 			$link_list[] = array(
