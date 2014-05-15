@@ -40,6 +40,12 @@ Dao::set_base($base);
 // Toolbox du site.
 $site = Site::get_instance();
 
+// Toolbox des requêtes.
+$req = Request::get_instance();
+
+// Toolbox de la session.
+$session = Session::get_instance();
+
 // Gestion des paramètre à envoyer à la vue.
 $view = View::get_instance();
 $view->root_www = $site->get_root();
@@ -49,7 +55,9 @@ $vars = array(
 	'conf' => $config,
 	'cache' => $cache,
 	'view' => $view,
-	'site' => $site
+	'site' => $site,
+	'req' => $req,
+	'session' => $session
 );
 
 // Définition générale du manager de controllers.
