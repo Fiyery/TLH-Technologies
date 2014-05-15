@@ -36,7 +36,8 @@ class admin
 		foreach ($menu as $m)
 		{
 			$link_list[] = array(
-				//$l->
+				'name' => $l->name,
+				'order'
 			);
 		}
 	}
