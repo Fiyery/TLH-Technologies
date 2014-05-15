@@ -16,6 +16,9 @@
 			<div id="MainBody" class="container">
 				<div id="MainRow" class="row">
 					<div id="MainContent" class="col-xs-12">
+						<?php
+							include 'partial/_msg_box.php';
+						?>
 						<div class="content">
 							<?= $content ?>
 						</div>
