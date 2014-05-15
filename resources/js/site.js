@@ -65,7 +65,6 @@ $(document).ready(function() {
 	});
 	
 	$("#SearchBox .data").keyup(function(e) {
-		console.log(e);
 		if(e.keyCode == 13) {
 			$("#SearchBox .icon.search").click();
 		}
