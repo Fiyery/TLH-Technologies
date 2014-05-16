@@ -17,6 +17,7 @@ ul.subcategories	{	 position: absolute; top: 100%; left: 0px; right: 0px; border
 form input[type="text"],
 form input[type="password"],
 form select	{	width: 100%; height: 24px;	}
+form textarea	{	width: 100%; min-height: 300px;	}
 form .row	{	margin-bottom: 4px;	}
 form .submit	{	text-align: right;	}
 form .lbl	{	text-align: right;	}
@@ -79,7 +80,7 @@ table tbody tr:hover td	{	color: #ff9700; background: #ffffff;	}
 
 /*	Main links	*/
 .mainlink	{	position: relative; display: block; height: 36px; width: 100%; line-height: 36px; text-align: center; font-size: 16px; color: transparent;
-				background-position: center center;	}
+				background-position: center center; cursor: pointer;	}
 .mainlink:visited	{	color: transparent;	}
 .mainlink:hover	{	text-decoration: none; color: transparent; border: 1px solid #ff9700; border-top: none; border-bottom: none; background-color: #ffffff;	}
 .mainlink .unfold	{	position: relative;	}

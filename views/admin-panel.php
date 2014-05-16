@@ -52,15 +52,15 @@
 									<td><span><?= $sous_item->date_modification ?></span></td>
 									<td class="fixed">
 								
-									<?php if ($sous_item->enable) : ?>
-								
-										<a href='<?= $root_www ?>admin/disable/?type=sous_menu&id=<?= $item->id ?>' class="icon small large eye_on">&nbsp;</a>
-								
-									<?php else : ?>
-								
-										<a href='<?= $root_www ?>admin/enable/?type=sous_menu&id=<?= $item->id ?>' class="icon small large eye_off">&nbsp;</a>
-								
-									<?php endif; ?>
+										<?php if ($sous_item->enable) : ?>
+									
+											<a href='<?= $root_www ?>admin/disable/?type=sous_menu&id=<?= $sous_item->id ?>' class="icon small large eye_on">&nbsp;</a>
+									
+										<?php else : ?>
+									
+											<a href='<?= $root_www ?>admin/enable/?type=sous_menu&id=<?= $sous_item->id ?>' class="icon small large eye_off">&nbsp;</a>
+									
+										<?php endif; ?>
 								
 										<a href='<?= $root_www ?>admin/edit/?type=sous_menu&id=<?= $sous_item->id ?>' class="icon small large edit">&nbsp;</a>
 									</td>

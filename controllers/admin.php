@@ -68,16 +68,38 @@ class admin
 		}
 	}
 	
+	function _set_enable($id, $type, $value)
+	{
+		if ($type == "menu" || $type == "sous_menu")
+		{
+			$data = ($type == "menu") ? Menu::load($this->req->id) : Sous_Menu::load($this->req->id);
+			if (is_object($data))
+			{
+				$data->modify(array("enable"=>$value));
+			}
+			else
+			{
+				$this->site->add_message("Aucun ".(($type == "menu") ? "menu" : "sous-menu")." ne correspond à votre demande", Site::ALERT_ERROR);
+			}
+		}
+		else
+		{
+			$this->site->add_message("Aucun élément de ce type n'existe", Site::ALERT_ERROR);
+		}
+	}
+	
 	public function enable()
 	{
 		if ($this->session->is_open())
 		{
-			//	TODO Yoann
-			// Requete GET. Il faut vérifier si :
-			//	- "type" existe et égale à "menu" ou "sous_menu"
-			//	- "id" existe et est integer
-			// Si OK :
-			//  - désactiver élément
+			if ($this->req->id > 0)
+			{
+				$this->_set_enable($this->req->id, $this->req->type, 1);
+			}
+			else
+			{
+				$this->site->add_message("Vous ne pouvez pas accéder à cet élément", Site::ALERT_ERROR);
+			}
 			$this->site->redirect($this->site->get_root().'admin/panel/');
 		}
 		else
@@ -91,12 +113,14 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
-			//	TODO Yoann
-			// Requete GET. Il faut vérifier si :
-			//	- "type" existe et égale à "menu" ou "sous_menu"
-			//	- "id" existe et est integer
-			// Si OK :
-			//  - activer élément
+			if ($this->req->id > 0)
+			{
+				$this->_set_enable($this->req->id, $this->req->type, 0);
+			}
+			else
+			{
+				$this->site->add_message("Vous ne pouvez pas accéder à cet élément", Site::ALERT_ERROR);
+			}
 			$this->site->redirect($this->site->get_root().'admin/panel/');
 		}
 		else
@@ -110,15 +134,62 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
-			//	TODO Yoann
-			// Requete GET. Il faut vérifier si :
-			//	- "type" existe et égale à "menu" ou "sous_menu"
-			//  - "type" == "menu", "id" (existe et est integer) ou (inexistant)
-			//  - "type" == "sous_menu", ("id" ou "id_menu" (existe et est integer))
-			// Si OK :
-			//  - Si "id" existant, charger l'élément du même "type" et "id"
-			//  - Si "id" inexistant, nouvel élément avec valeur par défaut du "type"
-			//  - Si "id_menu" et "sous_menu", parent par défaut du nouvel élément
+			$this->view->data = null;
+			if ($this->req->type == "menu")
+			{
+				$this->view->menus = null;
+				if (!empty($this->req->id))
+				{
+					$menu = Menu::load($this->req->id);
+					if (is_object($menu))
+					{
+						$this->view->data = $menu;
+					}
+					else
+					{
+						$this->site->add_message("Aucun menu ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+			}
+			elseif ($this->req->type == "sous_menu")
+			{
+				$this->view->menus = Menu::search();
+				if (!empty($this->req->id))
+				{
+					$sous_menu = Sous_Menu::load($this->req->id);
+					if (is_object($sous_menu))
+					{
+						$this->view->data = $sous_menu;
+					}
+					else
+					{
+						$this->site->add_message("Aucun sous-menu ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+				elseif (!empty($this->req->id_menu))
+				{
+					$menu = Menu::load($this->req->id_menu);
+					if (is_object($menu))
+					{
+						$sous_menu = new Sous_Menu();
+						$sous_menu->id = "";
+						$sous_menu->name = "";
+						$sous_menu->order = "";
+						$sous_menu->enable = "";
+						$sous_menu->id_menu = $this->req->id_menu;
+						$this->view->data = $sous_menu;
+					}
+					else
+					{
+						$this->site->add_message("Aucun menu ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+			}
+			else
+			{
+				$this->site->add_message("Erreur valeur de type", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');
+			}
 		}
 		else
 		{
@@ -128,11 +199,31 @@ class admin
 	}
 	
 	public function update()
-	{if ($this->session->is_open())
+	{
+		if ($this->session->is_open())
 		{
-			//	TODO Yoann
-			// Requete POST. Besoin de valider et sauvegarder les données reçues
-			$this->site->redirect($this->site->get_root().'admin/edit/');
+			$type = (isset($this->req->id_menu)) ? "sous_menu" : "menu";
+			if (isset($this->req->id))
+			{
+				if ($this->req->id == -1)
+				{
+					//Nouveau !
+				}
+				else
+				{
+					if ($type == "menu")
+					{
+						$menu = Menu::load($this->req->id);
+						$menu->modify(array("order" => $this->req->order));
+					}
+					else
+					{
+						$sous_menu = Sous_Menu::load($this->req->id);
+						$sous_menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu));
+					}
+				}
+			}
+			$this->site->redirect($this->site->get_root().'admin/edit/?type='.$type.'&id='.$this->req->id);
 		}
 		else
 		{
