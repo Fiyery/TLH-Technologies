@@ -1,3 +1,5 @@
 Options +FollowSymLinks
 RewriteEngine On
-RewriteRule ^([^\/]+)\/(([^\/]+)\/)?$ /TLH-Technologies/index.php?controller=$1&action=$3 [L]
+RewriteCond %{QUERY_STRING} !=""
+RewriteRule ^([^\/]+)\/(([^\/]+)\/)?$ /API07_Projet/index.php?controller=$1&action=$3&%{QUERY_STRING} [L]
+RewriteRule ^([^\/]+)\/(([^\/]+)\/)?$ /API07_Projet/index.php?controller=$1&action=$3 [L]
