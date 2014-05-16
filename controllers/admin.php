@@ -9,7 +9,7 @@ class admin
 		}
 	}
 	
-	public function panel()
+	public function connection()
 	{
 		// Connexion et ouverture de la session.
 		if ($this->session->is_open() == FALSE)
@@ -34,14 +34,7 @@ class admin
 			$this->session->open($admins[0]);
 			$this->site->add_message("Connexion réussie", Site::ALERT_OK);
 		}
-		$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
-		$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
-		
-		Debug::show($menus);
-		Debug::show($sous_menus);
-		
-		$this->view->menus = $menus;
-		$this->view->sous_menus = $sous_menus;
+		$this->site->redirect($this->site->get_root().'admin/panel/');
 	}
 	
 	public function deconnection()
@@ -51,7 +44,87 @@ class admin
 			$this->session->close();
 			$this->site->add_message("Vous avez été déconnecté", Site::ALERT_OK);
 		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+		}
 		$this->site->redirect($this->site->get_root().'admin/');
+	}
+	
+	public function panel()
+	{
+		if ($this->session->is_open())
+		{
+			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+		
+			$this->view->menus = $menus;
+			$this->view->sous_menus = $sous_menus;
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	public function enable()
+	{
+		if ($this->session->is_open())
+		{
+			//	TODO Yoann
+			// Requete GET. Il faut vérifier si :
+			//	- "type" existe et égale à "menu" ou "sous_menu"
+			//	- "id" existe et est integer
+			// Si OK :
+			//  - désactiver élément
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	public function disable()
+	{
+		if ($this->session->is_open())
+		{
+			//	TODO Yoann
+			// Requete GET. Il faut vérifier si :
+			//	- "type" existe et égale à "menu" ou "sous_menu"
+			//	- "id" existe et est integer
+			// Si OK :
+			//  - activer élément
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	public function edit()
+	{
+		if ($this->session->is_open())
+		{
+			//	TODO Yoann
+			// Requete GET. Il faut vérifier si :
+			//	- "type" existe et égale à "menu" ou "sous_menu"
+			//  - "type" == "menu", "id" (existe et est integer) ou (inexistant)
+			//  - "type" == "sous_menu", ("id" ou "id_menu" (existe et est integer))
+			// Si OK :
+			//  - Si "id" existant, charger l'élément du même "type" et "id"
+			//  - Si "id" inexistant, nouvel élément avec valeur par défaut du "type"
+			//  - Si "id_menu" et "sous_menu", parent par défaut du nouvel élément
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
 	}
 }
 ?>

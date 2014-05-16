@@ -38,7 +38,7 @@
 ?>
 
 <?php if (isset($success_list) && sizeof($success_list) > 0) : ?>
-	<div class='success_box'>
+	<div class="msg_box success">
 		<?php while (list($key, $value) = each($success_list)) :?>
 			<p><?= $value ?></p>
 		<?php endwhile; ?>
@@ -46,7 +46,7 @@
 <?php endif; ?>
 
 <?php if (isset($error_list) && sizeof($error_list) > 0) : ?>
-	<div class='error_box'>
+	<div class="msg_box error">
 		<?php while (list($key, $value) = each($error_list)) :?>
 			<p><?= $value ?></p>
 		<?php endwhile; ?>
@@ -54,7 +54,7 @@
 <?php endif; ?>
 
 <?php if (isset($info_list) && sizeof($info_list) > 0) : ?>
-	<div class='info_box'>
+	<div class="msg_box info">
 		<?php while (list($key, $value) = each($info_list)) :?>
 			<p><?= $value ?></p>
 		<?php endwhile; ?>
