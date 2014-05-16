@@ -126,5 +126,19 @@ class admin
 			$this->site->redirect($this->site->get_root().'admin/');
 		}
 	}
+	
+	public function update()
+	{if ($this->session->is_open())
+		{
+			//	TODO Yoann
+			// Requete POST. Besoin de valider et sauvegarder les données reçues
+			$this->site->redirect($this->site->get_root().'admin/edit/');
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
 }
 ?>
