@@ -1,11 +1,11 @@
-$(function(){
-	setTimeout('load_ajax_navigation()', 1);
-});
-
 function load_ajax_navigation() {
 	var ajax = {};
 	ajax.content_selector = '#MainContent';
 	ajax.localhost_dir = 'TLH-Technologies/';
+	
+	if (!window.location.origin) {
+		window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+	}
 	
 	ajax.get_root = function(){
 		if (!ajax.root) {
@@ -47,7 +47,8 @@ function load_ajax_navigation() {
 				$(this).empty().append(data).fadeIn(300);
 			});
 			ajax.change_address(url);
-		}).fail(function() {
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			console.log(jqXHR, textStatus, errorThrown);
 			alert('fail');
 		});
 	};
@@ -76,4 +77,6 @@ $(document).ready(function() {
 			$("#SearchBox .icon.search").click();
 		}
 	});
+	
+	load_ajax_navigation();
 });
