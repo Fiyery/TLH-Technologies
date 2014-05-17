@@ -9,7 +9,7 @@ class admin
 		}
 	}
 	
-	public function panel()
+	public function connection()
 	{
 		// Connexion et ouverture de la session.
 		if ($this->session->is_open() == FALSE)
@@ -34,14 +34,7 @@ class admin
 			$this->session->open($admins[0]);
 			$this->site->add_message("Connexion réussie", Site::ALERT_OK);
 		}
-		$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
-		$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
-		
-		Debug::show($menus);
-		Debug::show($sous_menus);
-		
-		$this->view->menus = $menus;
-		$this->view->sous_menus = $sous_menus;
+		$this->site->redirect($this->site->get_root().'admin/panel/');
 	}
 	
 	public function deconnection()
@@ -51,7 +44,192 @@ class admin
 			$this->session->close();
 			$this->site->add_message("Vous avez été déconnecté", Site::ALERT_OK);
 		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+		}
 		$this->site->redirect($this->site->get_root().'admin/');
+	}
+	
+	public function panel()
+	{
+		if ($this->session->is_open())
+		{
+			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+		
+			$this->view->menus = $menus;
+			$this->view->sous_menus = $sous_menus;
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	function _set_enable($id, $type, $value)
+	{
+		if ($type == "menu" || $type == "sous_menu")
+		{
+			$data = ($type == "menu") ? Menu::load($this->req->id) : Sous_Menu::load($this->req->id);
+			if (is_object($data))
+			{
+				$data->modify(array("enable"=>$value));
+			}
+			else
+			{
+				$this->site->add_message("Aucun ".(($type == "menu") ? "menu" : "sous-menu")." ne correspond à votre demande", Site::ALERT_ERROR);
+			}
+		}
+		else
+		{
+			$this->site->add_message("Aucun élément de ce type n'existe", Site::ALERT_ERROR);
+		}
+	}
+	
+	public function enable()
+	{
+		if ($this->session->is_open())
+		{
+			if ($this->req->id > 0)
+			{
+				$this->_set_enable($this->req->id, $this->req->type, 1);
+			}
+			else
+			{
+				$this->site->add_message("Vous ne pouvez pas accéder à cet élément", Site::ALERT_ERROR);
+			}
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	public function disable()
+	{
+		if ($this->session->is_open())
+		{
+			if ($this->req->id > 0)
+			{
+				$this->_set_enable($this->req->id, $this->req->type, 0);
+			}
+			else
+			{
+				$this->site->add_message("Vous ne pouvez pas accéder à cet élément", Site::ALERT_ERROR);
+			}
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	public function edit()
+	{
+		if ($this->session->is_open())
+		{
+			$this->view->data = null;
+			if ($this->req->type == "menu")
+			{
+				$this->view->menus = null;
+				if (!empty($this->req->id))
+				{
+					$menu = Menu::load($this->req->id);
+					if (is_object($menu))
+					{
+						$this->view->data = $menu;
+					}
+					else
+					{
+						$this->site->add_message("Aucun menu ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+			}
+			elseif ($this->req->type == "sous_menu")
+			{
+				$this->view->menus = Menu::search();
+				if (!empty($this->req->id))
+				{
+					$sous_menu = Sous_Menu::load($this->req->id);
+					if (is_object($sous_menu))
+					{
+						$this->view->data = $sous_menu;
+					}
+					else
+					{
+						$this->site->add_message("Aucun sous-menu ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+				elseif (!empty($this->req->id_menu))
+				{
+					$menu = Menu::load($this->req->id_menu);
+					if (is_object($menu))
+					{
+						$sous_menu = new Sous_Menu();
+						$sous_menu->id = "";
+						$sous_menu->name = "";
+						$sous_menu->order = "";
+						$sous_menu->enable = "";
+						$sous_menu->id_menu = $this->req->id_menu;
+						$this->view->data = $sous_menu;
+					}
+					else
+					{
+						$this->site->add_message("Aucun menu ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+			}
+			else
+			{
+				$this->site->add_message("Erreur valeur de type", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');
+			}
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
+	}
+	
+	public function update()
+	{
+		if ($this->session->is_open())
+		{
+			$type = (isset($this->req->id_menu)) ? "sous_menu" : "menu";
+			if (isset($this->req->id))
+			{
+				if ($this->req->id == -1)
+				{
+					//Nouveau !
+				}
+				else
+				{
+					if ($type == "menu")
+					{
+						$menu = Menu::load($this->req->id);
+						$menu->modify(array("order" => $this->req->order));
+					}
+					else
+					{
+						$sous_menu = Sous_Menu::load($this->req->id);
+						$sous_menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu));
+					}
+				}
+			}
+			$this->site->redirect($this->site->get_root().'admin/edit/?type='.$type.'&id='.$this->req->id);
+		}
+		else
+		{
+			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+			$this->site->redirect($this->site->get_root().'admin/');
+		}
 	}
 }
 ?>
