@@ -4,22 +4,23 @@ class navigation_menu
 	public function init()
 	{
 		$vars = $this->cache->read('navigation_menu', Cache::MONTH);
+		$vars = NULL;
 		if (is_array($vars) == FALSE)
 		{
-			$menus = Menu::search();
-			$sous_menus = Sous_Menu::search();
+			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>'order'));
+			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>'order'));
 			$list_links = array();
 			$root = $this->site->get_root();
 			foreach ($menus as $m)
 			{
-				if ($m->enable)
+				if ($m->enable == 1)
 				{
 					$link['name'] = $m->name;
 					$link['href'] = $root.String::format_url($m->name).'/';
 					$link['list'] = array();
 					foreach ($sous_menus as $sm)
 					{
-						if ($sm->id_menu == $m->id)
+						if ($sm->id_menu == $m->id && $sm->enable == 1)
 						{
 							$sub_link = array();
 							$sub_link['name'] = $sm->name;

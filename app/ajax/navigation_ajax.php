@@ -76,6 +76,20 @@ if (isset($_REQUEST['url']) == FALSE)
 else
 {
 	$url = str_replace($site->get_root(), '', $_REQUEST['url']);
+	$pos = strpos($url, '?');
+	$params = array();
+	if ($pos !== FALSE)
+	{
+		$params = explode('&', substr($url, $pos + 1));
+		$url = substr($url, 0, $pos);
+		foreach ($params as $p)
+		{
+			$pos = strpos($p, '=');
+			$name = substr($p, 0, $pos);
+			$value = substr($p, $pos + 1);
+			$_GET[$name] = $value;
+		}
+	}
 	preg_match('#([^\/]+)\/(([^\/]+)\/)?$#', $url, $match);
 	$count = count($match);
 	if ($count == 0)
