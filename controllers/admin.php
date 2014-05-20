@@ -72,14 +72,15 @@ class admin
 	{
 		if ($type == "menu" || $type == "sous_menu")
 		{
-			$data = ($type == "menu") ? Menu::load($this->req->id) : Sous_Menu::load($this->req->id);
+			$data = ($type == "menu") ? (Menu::load($this->req->id)) : (Sous_Menu::load($this->req->id));
 			if (is_object($data))
 			{
 				$data->modify(array("enable"=>$value));
 			}
 			else
 			{
-				$this->site->add_message("Aucun ".(($type == "menu") ? "menu" : "sous-menu")." ne correspond à votre demande", Site::ALERT_ERROR);
+				$name = str_replace('_', '-', $type);
+				$this->site->add_message("Aucun ".$name." ne correspond à votre demande", Site::ALERT_ERROR);
 			}
 		}
 		else
@@ -92,7 +93,7 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
-			if ($this->req->id > 0)
+			if ($this->req->id !== NULL && $this->req->id > 0)
 			{
 				$this->_set_enable($this->req->id, $this->req->type, 1);
 			}
@@ -113,7 +114,7 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
-			if ($this->req->id > 0)
+			if ($this->req->id !== NULL && $this->req->id > 0)
 			{
 				$this->_set_enable($this->req->id, $this->req->type, 0);
 			}

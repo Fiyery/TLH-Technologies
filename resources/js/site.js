@@ -27,38 +27,42 @@ function load_ajax_navigation() {
 	};
 	
 	ajax.load = function(url){
-		$.ajax({
-			url: ajax.get_root() + 'app/ajax/navigation_ajax.php',
-			type: 'post',
-			dataType: 'html',
-			async: false,
-			data: {
-				url: url
-			}
-		}).done(function(data){
-			// Si redirection traitement particulier.
-			var page = $('<div></div>').html(data);
-			var content = page.children().find(ajax.content_selector);
-			if (content.length > 0) {
-				data = content.html();
-				url = page.constructor.ajaxSettings.url;
-			}
-			$(ajax.content_selector).fadeOut(function() {
-				$(this).empty().append(data).fadeIn(300);
+		if (!ajax.is_ancre(url)) {
+			$.ajax({
+				url: ajax.get_root() + 'app/ajax/navigation_ajax.php',
+				type: 'post',
+				dataType: 'html',
+				async: false,
+				data: {
+					url: url
+				}
+			}).done(function(data){
+				// Si redirection traitement particulier.
+				var page = $('<div></div>').html(data);
+				var content = page.children().find(ajax.content_selector);
+				if (content.length > 0) {
+					data = content.html();
+					url = page.constructor.ajaxSettings.url;
+				}
+				$(ajax.content_selector).fadeOut(function() {
+					$(this).empty().append(data).fadeIn(300, function(){
+						ajax.init();
+					});
+				});
+				ajax.change_address(url);
+				// Réattribution du traitement sur les liens.
+				
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR, textStatus, errorThrown);
+				alert('fail');
 			});
-			ajax.change_address(url);
-		}).fail(function(jqXHR, textStatus, errorThrown) {
-			console.log(jqXHR, textStatus, errorThrown);
-			alert('fail');
-		});
+		}
+		return false;
 	};
 	
 	ajax.init = function(){
 		$('a').on('click', function() {
-			if (!ajax.is_ancre($(this).attr('href'))) {
-				ajax.load($(this).attr('href'));
-			}
-			return false;
+			return ajax.load($(this).attr('href'));
 		});
 	};
 	
