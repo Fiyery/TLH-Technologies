@@ -50,19 +50,8 @@ $session = Session::get_instance();
 $view = View::get_instance();
 $view->root_www = $site->get_root();
 
-// Définition des variables globales.
-$vars = array(
-	'conf' => $config,
-	'cache' => $cache,
-	'view' => $view,
-	'site' => $site,
-	'req' => $req,
-	'session' => $session
-);
-
 // Définition générale du manager de controllers.
 $controller = ControllerManager::get_instance();
-$controller->set_params($vars);
 $controller->set_controllers_dir('controllers/');
 $controller->set_views_dir('views/');
 $controller->set_view($view);
@@ -88,6 +77,8 @@ else
 			$name = substr($p, 0, $pos);
 			$value = substr($p, $pos + 1);
 			$_GET[$name] = $value;
+			$_REQUEST[$name] = $value;
+			$req->$name = $value;
 		}
 	}
 	preg_match('#([^\/]+)\/(([^\/]+)\/)?$#', $url, $match);
@@ -113,6 +104,19 @@ else
 		$action = 'not_found';
 	}
 }
+
+// Définition des variables globales.
+$vars = array(
+	'conf' => $config,
+	'cache' => $cache,
+	'view' => $view,
+	'site' => $site,
+	'req' => $req,
+	'session' => $session
+);
+$controller->set_params($vars);
+
+// Chargement du controller.
 $controller->load($name, $action);
 
 // Exécution du controller.
