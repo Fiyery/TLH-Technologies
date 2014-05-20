@@ -38,6 +38,8 @@
 								
 								<?php endif; ?>
 								
+								<a href='<?= $root_www ?>admin/moveup/?type=menu&id=<?= $item->id ?>' class="icon small up">&nbsp;</a>
+								<a href='<?= $root_www ?>admin/movedown/?type=menu&id=<?= $item->id ?>' class="icon small down">&nbsp;</a>
 								<a href='<?= $root_www ?>admin/edit/?type=menu&id=<?= $item->id ?>' class="icon small large edit">&nbsp;</a>
 							</th>
 						</tr>
@@ -61,7 +63,9 @@
 											<a href='<?= $root_www ?>admin/enable/?type=sous_menu&id=<?= $sous_item->id ?>' class="icon small large eye_off">&nbsp;</a>
 									
 										<?php endif; ?>
-								
+										
+										<a href='<?= $root_www ?>admin/moveup/?type=sous_menu&id=<?= $item->id ?>' class="icon small up">&nbsp;</a>
+										<a href='<?= $root_www ?>admin/movedown/?type=sous_menu&id=<?= $item->id ?>' class="icon small down">&nbsp;</a>
 										<a href='<?= $root_www ?>admin/edit/?type=sous_menu&id=<?= $sous_item->id ?>' class="icon small large edit">&nbsp;</a>
 									</td>
 								</tr>
