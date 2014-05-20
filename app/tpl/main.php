@@ -9,9 +9,12 @@
 		<title>TLH Technologies - Internet de demain</title>
 	</head>
 	<body>
+		<?php
+			include 'partial/_header.php';
+		?>
 		<div id="Wrapper">
 			<?php
-				include 'partial/_header.php';
+				include 'partial/_banner.php';
 			?>
 			<div id="MainBody" class="container">
 				<div id="MainRow" class="row">

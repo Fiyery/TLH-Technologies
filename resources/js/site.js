@@ -63,9 +63,11 @@ function load_ajax_navigation() {
 	};
 	
 	ajax.init();
+	return ajax;
 };
 
 $(document).ready(function() {
+	var ajax = load_ajax_navigation();
 	$("#SearchBox .icon.search").click(function() {
 		var uri = $("#SearchBox .hide").val() + "?keywords=" + encodeURIComponent($("#SearchBox .data").val());
 		$("#SearchBox a").attr("href", uri);
@@ -78,5 +80,5 @@ $(document).ready(function() {
 		}
 	});
 	
-	load_ajax_navigation();
+	window.onhashchange = function() {	console.log(ajax);	};
 });
