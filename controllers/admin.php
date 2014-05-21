@@ -75,7 +75,12 @@ class admin
 			$data = ($type == "menu") ? (Menu::load($this->req->id)) : (Sous_Menu::load($this->req->id));
 			if (is_object($data))
 			{
-				$data->modify(array("enable"=>$value));
+				$update_enable = $data->modify(array("enable"=>$value));
+				$msg_content = ($update_enable)
+					? "Vos changements ont été prises en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
+					: "Une erreur est survenue dans l'enregistrement de vos données";
+				$msg_type = ($update_enable) ? Site::ALERT_OK : Site::ALERT_ERROR ;
+				$this->site->add_message($msg_content, $msg_type);
 			}
 			else
 			{
@@ -145,8 +150,13 @@ class admin
 					$target = $target[0];
 					$new_data = array('order' => $target->order);
 					$new_target = array('order' => $data->order);
-					$this->site->add_message($data->modify($new_data) ? "OK DATA" : "FAIL DATA", Site::ALERT_INFO);
-					$this->site->add_message($target->modify($new_target) ? "OK TARGET" : "FAIL TARGET", Site::ALERT_INFO);
+					$update_data = $data->modify($new_data);
+					$update_target = $target->modify($new_target);
+					$msg_content = ($update_data && $update_target)
+						? "Vos changements ont été prises en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
+						: "Une erreure est survenu dans l'enregistrement de vos données";
+					$msg_type = ($update_data && $update_target) ? Site::ALERT_OK : Site::ALERT_ERROR ;
+					$this->site->add_message($msg_content, $msg_type);
 				}
 				else
 				{
