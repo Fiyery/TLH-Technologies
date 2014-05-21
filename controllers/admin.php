@@ -92,7 +92,7 @@ class admin
 			$data = ($type == "menu") ? (Menu::load($this->req->id)) : (Sous_Menu::load($this->req->id));
 			if (is_object($data))
 			{
-				$this->_set_msg($data->modify(array("enable"=>$value)));
+				$this->_set_msg($data->modify(array("enable" => $value, "date_modification" => date('Y-m-d H:i:s'))));
 			}
 			else
 			{
@@ -160,8 +160,8 @@ class admin
 				if ($target != NULL)
 				{
 					$target = $target[0];
-					$new_data = array('order' => $target->order);
-					$new_target = array('order' => $data->order);
+					$new_data = array('order' => $target->order, "date_modification" => date('Y-m-d H:i:s'));
+					$new_target = array('order' => $data->order, "date_modification" => date('Y-m-d H:i:s'));
 					$update_data = $data->modify($new_data);
 					$update_target = $target->modify($new_target);
 					$this->_set_msg($update_data && $update_target);
@@ -306,7 +306,6 @@ class admin
 					{
 						$this->site->add_message("Aucun menu ne correspond à votre demande", Site::ALERT_ERROR);
 					}
-					Debug::show($menu);
 				}
 			}
 			else
@@ -320,7 +319,6 @@ class admin
 			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
 			$this->site->redirect($this->site->get_root().'admin/');
 		}
-		Debug::show($this->view->data);
 	}
 	
 	public function update()
@@ -328,29 +326,73 @@ class admin
 		if ($this->session->is_open())
 		{
 			$type = (isset($this->req->id_menu)) ? "sous_menu" : "menu";
+			$forward_id = ($this->req->id > 0) ? $this->req->id : "";
 			if (isset($this->req->id))
 			{
 				if ($this->req->id == -1)
 				{
-					//Nouveau !
+					if ($type == "menu")
+					{
+						$last_menu = Menu::search(NULL, NULL, NULL, NULL, array('DESC' => 'order'));
+						if (is_array($last_menu) && count($last_menu) > 0)
+						{
+							$order = $last_menu = $last_menu[0]->order + 1;
+							$new_menu = Menu::add(array(NULL, $this->req->name, $this->req->enable, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $order));
+							$this->_set_msg($new_menu, "Vos modifications ont été enregistrées");
+							$new_menu = Menu::search(array('order' => $order));
+							if (is_array($new_menu) && count($new_menu) > 0)
+							{
+								$forward_id = $new_menu[0]->id;
+							}
+						}
+						else
+						{
+							$this->site->add_message("Une erreur est survenue dans l'accès à vos données", Site::ALERT_ERROR);
+						}
+					}
+					else
+					{
+						$menu = Menu::load($this->req->id_menu);
+						if (is_array($menu) && count($menu) > 0)
+						{
+							$order = 0;
+							$last_sous_menu = Sous_Menu::search('id_menu', $this->req->id_menu, NULL, NULL, array('DESC' => 'order'));
+							if (is_array($last_sous_menu) && count($last_sous_menu) > 0)
+							{
+								$order = $last_sous_menu[0]->order + 1;
+							}
+							$new_sous_menu = Sous_Menu::add(array(NULL, $this->req->name, $this->req->enable, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $order, $this->req->id_menu));
+							$this->_set_msg($new_sous_menu, "Vos modifications ont été enregistrées");
+							$new_sous_menu = Menu::search(array('order' => $order, 'id_menu' => $this->req->id_menu));
+							if (is_array($new_sous_menu) && count($new_sous_menu) > 0)
+							{
+								$forward_id = $new_sous_menu[0]->id;
+							}
+						}
+						else
+						{
+							$this->site->add_message("Vous ne pouvez pas créer un sous-menu sous un menu inexistant", Site::ALERT_ERROR);
+						}
+					}
 				}
 				else
 				{
 					if ($type == "menu")
 					{
 						$menu = Menu::load($this->req->id);
-						$update_menu = $menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable));
+						$update_menu = $menu->modify(array("name" => $this->req->name, "enable" => $this->req->enable, "date_modification" => date('Y-m-d H:i:s')));
 						$this->_set_msg($update_menu, "Vos modifications ont été enregistrées");
 					}
 					else
 					{
 						$sous_menu = Sous_Menu::load($this->req->id);
-						$update_sous_menu = $sous_menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu));
+						$update_sous_menu = $sous_menu->modify(array("name" => $this->req->name, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu, "date_modification" => date('Y-m-d H:i:s')));
 						$this->_set_msg($update_sous_menu, "Vos modifications ont été enregistrées");
 					}
 				}
 			}
-			$this->site->redirect($this->site->get_root().'admin/edit/?type='.$type.'&id='.$this->req->id);
+			$id_data = (!empty(''.$forward_id)) ? '&id='.$forward_id : '';
+			$this->site->redirect($this->site->get_root().'admin/edit/?type='.$type.$id_data);
 		}
 		else
 		{
