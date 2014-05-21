@@ -79,7 +79,7 @@ abstract class Dao
     	$sql .= ' WHERE ';
     	for($i=0; $i < $nb_keys; $i++)
     	{
-        	$sql .= $keys[$i].' = \''.$this->$keys[$i].'\'';
+        	$sql .= '`'.$keys[$i].'` = \''.$this->$keys[$i].'\'';
         	if ($i < $nb_keys-1)
         	{
         	   $sql .= ' AND ';
