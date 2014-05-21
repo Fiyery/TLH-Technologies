@@ -1,5 +1,5 @@
 <form action="<?= $root_www ?>admin/update/" method="post">
-	<input name="id" value="<?=(isset($data)) ? $data->id : -1 ?>" readonly="readonly" type="hidden"/>
+	<input name="id" value="<?=(isset($data) && is_numeric($data->id)) ? $data->id : -1 ?>" readonly="readonly" type="hidden"/>
 	<div class="content">
 		<div class="absTopRight">
 			<a href='<?= $root_www ?>admin/panel/' class="mainlink icon small back">Retour au panel</a>
@@ -9,26 +9,19 @@
 		<h1>Propriétés du menu</h1>
 		
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-lg-3">
+			<div class="col-xs-12 col-sm-6 col-lg-4">
 				<div class="row">
 					<div class="col-xs-4 lbl"><span>Nom<span></div>
 					<div class="col-xs-6 col-sm-8"><input name="name" value="<?= ((isset($data)) ? $data->name : "") ?>" type="text"/></div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-6 col-lg-3">
-				<div class="row">
-					<div class="col-xs-4 lbl"><span>Ordre<span></div>
-					<div class="col-xs-6 col-sm-8"><input name="order" value="<?=(isset($data)) ? $data->order : "" ?>" type="text"/></div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-6 col-lg-3">
+			<div class="col-xs-12 col-sm-6 col-lg-4">
 				<div class="row">
 					<div class="col-xs-4 lbl"><span>Visible<span></div>
 					<div class="col-xs-6 col-sm-8">
 						<select name="enable">
+							<option value="1"<?=(!isset($data) || (isset($data) && $data->enable == 1)) ? " selected='selected'" : "" ?>>Oui</option>
 							<option value="0"<?=(isset($data) && $data->enable == 0) ? " selected='selected'" : "" ?>>Non</option>
-							<option value="1"<?=(isset($data) && $data->enable == 1) ? " selected='selected'" : "" ?>>Oui</option>
-							<option value=""<?=(!isset($data) || ($data->enable != 1 && $data->enable != 0)) ? " selected='selected'" : "" ?>></option>
 						</select>
 					</div>
 				</div>
@@ -36,12 +29,11 @@
 			
 			<?php if (isset($menus)) : ?>
 			
-				<div class="col-xs-12 col-sm-6 col-lg-3">
+				<div class="col-xs-12 col-sm-6 col-lg-4">
 					<div class="row">
 						<div class="col-xs-4 lbl"><span>Parent<span></div>
 						<div class="col-xs-6 col-sm-8">
 							<select name="id_menu">
-								
 								<?php
 								$found = false;
 								foreach ($menus as $item) {
@@ -54,8 +46,6 @@
 									echo '<option value="'.$item->id.'"'.(($selected) ? ' selected="selected"' : '' ).'>'.$item->name.'</option>';
 								}
 								?>
-								
-								<option value=""<?= (!$found) ? ' selected="selected"' : '' ?>></option>
 							</select>
 						</div>
 					</div>

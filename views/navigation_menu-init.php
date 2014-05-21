@@ -4,6 +4,9 @@
 	
 		<li class="categorie">
 			<a href='<?= $item['href'] ?>'><?= $item['name'] ?></a>
+			
+			<?php if (isset($item['list']) && count($item['list']) > 0) : ?>
+			
 			<div class="onHover">
 				<ul class="subcategories">
 				
@@ -17,6 +20,8 @@
 					
 				</ul>
 			</div>
+			
+			<?php endif ?>
 		
 		</li>
 
