@@ -72,7 +72,7 @@ abstract class Dao
     	$table = strtolower($class); 
     	$sql = 'UPDATE `'.$table.'` SET ';
     	$i=0;
-    	$sql .=  implode(' = ?, ', array_keys($data)).' = ?';
+    	$sql .=  '`'.implode('` = ?, `', array_keys($data)).'` = ?';
     	$list_data = array_values($data);
     	$keys = $class::get_keys(); 
     	$nb_keys = count($keys);
@@ -86,6 +86,7 @@ abstract class Dao
         	}
     	}
     	$sql .= ';';
+    	Debug::show($sql);
     	$return = self::$_base->query($sql,self::$_base->select_base($table),$list_data);
     	if ($return !== FALSE)
     	{
