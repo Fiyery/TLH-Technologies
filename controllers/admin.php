@@ -55,8 +55,8 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
-			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
-			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order', 'name')));
+			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order')));
+			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order')));
 		
 			$this->view->menus = $menus;
 			$this->view->sous_menus = $sous_menus;
@@ -131,6 +131,110 @@ class admin
 		}
 	}
 	
+	function _set_order($id, $type, $value)
+	{
+		if ($type == "menu" || $type == "sous_menu")
+		{
+			$data = ($type == "menu") ? (Menu::load($this->req->id)) : (Sous_Menu::load($this->req->id));
+			if (is_object($data))
+			{
+				$lookup = ''.($data->order + $value);
+				$target = ($type == "menu") ? Menu::search('order', $lookup) : Sous_Menu::search(array('id_menu' => $data->id_menu, 'order' => $lookup));
+				if ($target != NULL)
+				{
+					$target = $target[0];
+					$new_data = array('order' => $target->order);
+					$new_target = array('order' => $data->order);
+					$this->site->add_message($data->modify($new_data) ? "OK DATA" : "FAIL DATA", Site::ALERT_INFO);
+					$this->site->add_message($target->modify($new_target) ? "OK TARGET" : "FAIL TARGET", Site::ALERT_INFO);
+				}
+				else
+				{
+					$name = str_replace('_', '-', $type);
+					$verbe = ($value > 0) ? "suit" : "précède";
+					$this->site->add_message("Aucun ".$name." ne ".$verbe." celui-ci", Site::ALERT_ERROR);
+				}
+			}
+			else
+			{
+				$name = str_replace('_', '-', $type);
+				$this->site->add_message("Aucun ".$name." ne correspond à votre demande", Site::ALERT_ERROR);
+			}
+		}
+		else
+		{
+			$this->site->add_message("Aucun élément de ce type n'existe", Site::ALERT_ERROR);
+		}
+	}
+	
+	public function moveup()
+	{
+		if ($this->session->is_open() && $this->req->type !== NULL && $this->req->id !== NULL)
+		{
+			if (is_numeric($this->req->id) && $this->req->id > 0)
+			{
+				$this->_set_order($this->req->id, $this->req->type, -1);
+			}
+			else
+			{
+				$this->site->add_message("Vous ne pouvez pas accéder à cet élément", Site::ALERT_ERROR);
+			}
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
+		else
+		{
+			if ($this->req->type === NULL)
+			{
+				$this->site->add_message("Veuillez préciser un type d'élément", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');
+			}
+			elseif ($this->req->id === NULL)
+			{
+				$this->site->add_message("Veuillez préciser un élément", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');
+			}
+			else
+			{
+				$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/');
+			}
+		}
+	}
+	
+	public function movedown()
+	{
+		if ($this->session->is_open() && $this->req->type !== NULL && $this->req->id !== NULL)
+		{
+			if (is_numeric($this->req->id) && $this->req->id > 0)
+			{
+				$this->_set_order($this->req->id, $this->req->type, 1);
+			}
+			else
+			{
+				$this->site->add_message("Vous ne pouvez pas accéder à cet élément", Site::ALERT_ERROR);
+			}
+			$this->site->redirect($this->site->get_root().'admin/panel/');
+		}
+		else
+		{
+			if ($this->req->type === NULL)
+			{
+				$this->site->add_message("Veuillez préciser un type d'élément", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');
+			}
+			elseif ($this->req->id === NULL)
+			{
+				$this->site->add_message("Veuillez préciser un élément", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');
+			}
+			else
+			{
+				$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/');
+			}
+		}
+	}
+	
 	public function edit()
 	{
 		if ($this->session->is_open())
@@ -176,14 +280,15 @@ class admin
 						$sous_menu->id = "";
 						$sous_menu->name = "";
 						$sous_menu->order = "";
-						$sous_menu->enable = "";
-						$sous_menu->id_menu = $this->req->id_menu;
+						$sous_menu->enable = $menu->enable;
+						$sous_menu->id_menu = $menu->id;
 						$this->view->data = $sous_menu;
 					}
 					else
 					{
 						$this->site->add_message("Aucun menu ne correspond à votre demande", Site::ALERT_ERROR);
 					}
+					Debug::show($menu);
 				}
 			}
 			else
@@ -197,6 +302,7 @@ class admin
 			$this->site->add_message("Veuillez vous connecter", Site::ALERT_ERROR);
 			$this->site->redirect($this->site->get_root().'admin/');
 		}
+		Debug::show($this->view->data);
 	}
 	
 	public function update()
