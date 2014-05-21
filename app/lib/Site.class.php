@@ -311,7 +311,7 @@ class Site extends Singleton
 		{
 			return NULL;
 		}
-		$list = array();
+		$str = array();
 		foreach($this->_session->__messages as $message => $type)
 		{
 			$str[] = $this->format($message, $type);

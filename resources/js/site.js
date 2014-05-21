@@ -54,7 +54,6 @@ function load_ajax_navigation() {
 				
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR, textStatus, errorThrown);
-				alert('fail');
 			});
 		}
 		return false;
