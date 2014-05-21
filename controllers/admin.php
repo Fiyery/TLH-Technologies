@@ -68,6 +68,23 @@ class admin
 		}
 	}
 	
+	function _set_msg($bool, $user_msg_ok = NULL, $user_msg_error = NULL)
+	{
+		$msg_ok = (empty($user_msg_ok))
+			? "Vos changements ont été prises en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
+			: $user_msg_ok;
+			
+		$msg_error = (empty($user_msg_error))
+			? "Une erreure est survenu dans l'enregistrement de vos données"
+			: $user_msg_error;
+			
+		$msg_content = ($bool) ? $msg_ok : $msg_error;
+		$msg_type = ($bool) ? Site::ALERT_OK : Site::ALERT_ERROR ;
+		
+		$this->site->add_message($msg_content, $msg_type);
+	
+	}
+	
 	function _set_enable($id, $type, $value)
 	{
 		if ($type == "menu" || $type == "sous_menu")
@@ -75,12 +92,7 @@ class admin
 			$data = ($type == "menu") ? (Menu::load($this->req->id)) : (Sous_Menu::load($this->req->id));
 			if (is_object($data))
 			{
-				$update_enable = $data->modify(array("enable"=>$value));
-				$msg_content = ($update_enable)
-					? "Vos changements ont été prises en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
-					: "Une erreur est survenue dans l'enregistrement de vos données";
-				$msg_type = ($update_enable) ? Site::ALERT_OK : Site::ALERT_ERROR ;
-				$this->site->add_message($msg_content, $msg_type);
+				$this->_set_msg($data->modify(array("enable"=>$value)));
 			}
 			else
 			{
@@ -152,11 +164,7 @@ class admin
 					$new_target = array('order' => $data->order);
 					$update_data = $data->modify($new_data);
 					$update_target = $target->modify($new_target);
-					$msg_content = ($update_data && $update_target)
-						? "Vos changements ont été prises en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
-						: "Une erreure est survenu dans l'enregistrement de vos données";
-					$msg_type = ($update_data && $update_target) ? Site::ALERT_OK : Site::ALERT_ERROR ;
-					$this->site->add_message($msg_content, $msg_type);
+					$this->_set_msg($update_data && $update_target);
 				}
 				else
 				{
@@ -331,12 +339,14 @@ class admin
 					if ($type == "menu")
 					{
 						$menu = Menu::load($this->req->id);
-						$menu->modify(array("order" => $this->req->order));
+						$update_menu = $menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable));
+						$this->_set_msg($update_menu, "Vos modifications ont été enregistrées");
 					}
 					else
 					{
 						$sous_menu = Sous_Menu::load($this->req->id);
-						$sous_menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu));
+						$update_sous_menu = $sous_menu->modify(array("name" => $this->req->name, "order" => $this->req->order, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu));
+						$this->_set_msg($update_sous_menu, "Vos modifications ont été enregistrées");
 					}
 				}
 			}
