@@ -353,7 +353,7 @@ class admin
 					else
 					{
 						$menu = Menu::load($this->req->id_menu);
-						if (is_array($menu) && count($menu) > 0)
+						if (is_object($menu))
 						{
 							$order = 0;
 							$last_sous_menu = Sous_Menu::search('id_menu', $this->req->id_menu, NULL, NULL, array('DESC' => 'order'));
@@ -363,7 +363,7 @@ class admin
 							}
 							$new_sous_menu = Sous_Menu::add(array(NULL, $this->req->name, $this->req->enable, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $order, $this->req->id_menu));
 							$this->_set_msg($new_sous_menu, "Vos modifications ont été enregistrées");
-							$new_sous_menu = Menu::search(array('order' => $order, 'id_menu' => $this->req->id_menu));
+							$new_sous_menu = Sous_Menu::search(array('order' => $order, 'id_menu' => $this->req->id_menu));
 							if (is_array($new_sous_menu) && count($new_sous_menu) > 0)
 							{
 								$forward_id = $new_sous_menu[0]->id;
