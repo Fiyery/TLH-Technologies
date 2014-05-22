@@ -22,7 +22,6 @@ class navigation_menu
 					{
 						if ($sm->id_menu == $m->id && $sm->enable == 1)
 						{
-							$sub_link = array();
 							$sub_link['name'] = $sm->name;
 							$sub_link['href'] = $link['href'].String::format_url($sm->name).'/';
 							$link['list'][] = $sub_link;
