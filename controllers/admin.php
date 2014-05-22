@@ -55,11 +55,12 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
+			$static_menus = Static_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('name')));
 			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order')));
 			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>array('order')));
-		
 			$this->view->menus = $menus;
 			$this->view->sous_menus = $sous_menus;
+			$this->view->static_menus = $static_menus;
 		}
 		else
 		{
@@ -71,7 +72,7 @@ class admin
 	function _set_msg($bool, $user_msg_ok = NULL, $user_msg_error = NULL)
 	{
 		$msg_ok = (empty($user_msg_ok))
-			? "Vos changements ont été prises en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
+			? "Vos changements ont été pris en compte, veuillez rafrachir la page pour visualiser le nouveau menu"
 			: $user_msg_ok;
 			
 		$msg_error = (empty($user_msg_error))
@@ -257,6 +258,8 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
+			$this->view->type = $this->req->type;
+			$this->view->content = NULL;
 			$this->view->data = null;
 			if ($this->req->type == "menu")
 			{
@@ -267,6 +270,8 @@ class admin
 					if (is_object($menu))
 					{
 						$this->view->data = $menu;
+						$file = 'views/'.String::format_url($menu->name).'-default_action.php';
+						$this->view->content = file_get_contents($file);
 					}
 					else
 					{
@@ -283,6 +288,9 @@ class admin
 					if (is_object($sous_menu))
 					{
 						$this->view->data = $sous_menu;
+						$menu = Menu::load($sous_menu->id_menu);
+						$file = 'views/'.String::format_url($menu->name).'-'.String::format_url($sous_menu->name).'.php';
+						$this->view->content = file_get_contents($file);
 					}
 					else
 					{
@@ -308,6 +316,24 @@ class admin
 					}
 				}
 			}
+			elseif ($this->req->type == 'static_menu')
+			{
+				$this->view->menus = null;
+				if (!empty($this->req->id))
+				{
+					$menu = Static_Menu::load($this->req->id);
+					if (is_object($menu))
+					{
+						$this->view->data = $menu;
+						$file = 'views/'.String::format_url($menu->name).'-default_action.php';
+						$this->view->content = file_get_contents($file);
+					}
+					else
+					{
+						$this->site->add_message("Aucun menu statique ne correspond à votre demande", Site::ALERT_ERROR);
+					}
+				}
+			}
 			else
 			{
 				$this->site->add_message("Erreur valeur de type", Site::ALERT_ERROR);
@@ -325,8 +351,13 @@ class admin
 	{
 		if ($this->session->is_open())
 		{
-			$type = (isset($this->req->id_menu)) ? "sous_menu" : "menu";
-			$forward_id = ($this->req->id > 0) ? $this->req->id : "";
+			if (in_array($this->req->type, array('menu', 'sous_menu', 'static_menu')) == FALSE)
+			{
+				$this->site->add_message("Une erreur est survenue lors de la réception de vos données", Site::ALERT_ERROR);
+				$this->site->redirect($this->site->get_root().'admin/panel/');				
+			}
+			$type = $this->req->type;
+			$forward_id = ($this->req->id > 0) ? $this->req->id : NULL;
 			if (isset($this->req->id))
 			{
 				if ($this->req->id == -1)
@@ -381,17 +412,26 @@ class admin
 					{
 						$menu = Menu::load($this->req->id);
 						$update_menu = $menu->modify(array("name" => $this->req->name, "enable" => $this->req->enable, "date_modification" => date('Y-m-d H:i:s')));
+						$menu->set_content($this->req->content);
 						$this->_set_msg($update_menu, "Vos modifications ont été enregistrées");
 					}
-					else
+					elseif ($type == 'sous_menu')
 					{
 						$sous_menu = Sous_Menu::load($this->req->id);
 						$update_sous_menu = $sous_menu->modify(array("name" => $this->req->name, "enable" => $this->req->enable, "id_menu" => $this->req->id_menu, "date_modification" => date('Y-m-d H:i:s')));
+						$sous_menu->set_content($this->req->content);
 						$this->_set_msg($update_sous_menu, "Vos modifications ont été enregistrées");
+					}
+					else 
+					{
+						$menu = Static_Menu::load($this->req->id);
+						$update_menu = $menu->modify(array("name" => $this->req->name, "date_modification" => date('Y-m-d H:i:s')));
+						$menu->set_content($this->req->content);
+						$this->_set_msg($update_menu, "Vos modifications ont été enregistrées");
 					}
 				}
 			}
-			$id_data = (!empty(''.$forward_id)) ? '&id='.$forward_id : '';
+			$id_data = ($forward_id !== NULL) ? '&id='.$forward_id : '';
 			$this->site->redirect($this->site->get_root().'admin/edit/?type='.$type.$id_data);
 		}
 		else
