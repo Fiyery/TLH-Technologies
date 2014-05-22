@@ -1,5 +1,5 @@
-<?php
-class Menu extends Dao
+<?php 
+class Static_Menu extends Dao
 {
 	/**
 	 * Définie le contenu du la page.

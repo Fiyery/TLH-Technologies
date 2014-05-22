@@ -6,6 +6,9 @@
 	<h1>Panel d'administration</h1>
 	
 	<div class="fixedColumnWrapper outer">
+	
+		<h2>Pages dynamiques</h2>
+	
 		<div class="fixedColumnWrapper inner">
 			<table class="fixedColumn">
 				<thead>
@@ -74,6 +77,35 @@
 						<?php endforeach; ?>
 						
 						
+					<?php endforeach; ?>
+					
+				</tbody>
+			</table>
+			
+			<h2>Pages statiques</h2>
+			
+			<table class="fixedColumn">
+				<thead>
+					<tr>
+						<th><span>Nom du menu / sous-menu</span></th>
+						<th><span>Date de création</span></th>
+						<th><span>Date de modification</span></th>
+						<th class="fixed">
+							<a href='<?= $root_www ?>admin/edit/?type=menu' class="icon small plus_full">&nbsp;</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<?php foreach ($static_menus as $item) :?>
+						<tr class="menu">
+							<th><span><?= $item->name ?></span></th>
+							<th><span><?= $item->date_creation ?></span></th>
+							<th><span><?= $item->date_modification ?></span></th>
+							<th class="fixed">			
+								<a href='<?= $root_www ?>admin/edit/?type=static_menu&id=<?= $item->id ?>' class="icon small large edit">&nbsp;</a>
+							</th>
+						</tr>						
 					<?php endforeach; ?>
 					
 				</tbody>

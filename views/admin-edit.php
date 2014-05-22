@@ -1,5 +1,6 @@
 <form action="<?= $root_www ?>admin/update/" method="post">
 	<input name="id" value="<?=(isset($data) && is_numeric($data->id)) ? $data->id : -1 ?>" readonly="readonly" type="hidden"/>
+	<input name="type" value="<?= $type ?>" readonly="readonly" type="hidden"/>
 	<div class="content">
 		<div class="absTopRight">
 			<a href='<?= $root_www ?>admin/panel/' class="mainlink icon small back">Retour au panel</a>
@@ -15,17 +16,19 @@
 					<div class="col-xs-6 col-sm-8"><input name="name" value="<?= ((isset($data)) ? $data->name : "") ?>" type="text"/></div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-6 col-lg-4">
-				<div class="row">
-					<div class="col-xs-4 lbl"><span>Visible<span></div>
-					<div class="col-xs-6 col-sm-8">
-						<select name="enable">
-							<option value="1"<?=(!isset($data) || (isset($data) && $data->enable == 1)) ? " selected='selected'" : "" ?>>Oui</option>
-							<option value="0"<?=(isset($data) && $data->enable == 0) ? " selected='selected'" : "" ?>>Non</option>
-						</select>
+			<?php if (isset($data->enable)): ?>
+				<div class="col-xs-12 col-sm-6 col-lg-4">
+					<div class="row">
+						<div class="col-xs-4 lbl"><span>Visible<span></div>
+						<div class="col-xs-6 col-sm-8">
+							<select name="enable">
+								<option value="1"<?=(!isset($data) || (isset($data) && $data->enable == 1)) ? " selected='selected'" : "" ?>>Oui</option>
+								<option value="0"<?=(isset($data) && $data->enable == 0) ? " selected='selected'" : "" ?>>Non</option>
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
+			<?php endif; ?>
 			
 			<?php if (isset($menus)) : ?>
 			
@@ -66,7 +69,7 @@
 		
 				<h1>Contenu de la page</h1>
 			
-				<textarea id="Contenu" name="content"></textarea>
+				<textarea id="Contenu" name="content"><?= $content ?></textarea>
 			</div>
 		</div>
 		<div class="col-xs-12 col-lg-6">
