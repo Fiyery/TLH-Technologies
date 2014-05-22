@@ -91,7 +91,7 @@
 						<th><span>Date de création</span></th>
 						<th><span>Date de modification</span></th>
 						<th class="fixed">
-							<a href='<?= $root_www ?>admin/edit/?type=menu' class="icon small plus_full">&nbsp;</a>
+							<a href='<?= $root_www ?>admin/edit/?type=static_menu' class="icon small plus_full">&nbsp;</a>
 						</th>
 					</tr>
 				</thead>

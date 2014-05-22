@@ -76,7 +76,7 @@ class admin
 			: $user_msg_ok;
 			
 		$msg_error = (empty($user_msg_error))
-			? "Une erreure est survenu dans l'enregistrement de vos données"
+			? "Une erreur est survenue dans l'enregistrement de vos données"
 			: $user_msg_error;
 			
 		$msg_content = ($bool) ? $msg_ok : $msg_error;
@@ -369,6 +369,7 @@ class admin
 						{
 							$order = $last_menu = $last_menu[0]->order + 1;
 							$new_menu = Menu::add(array(NULL, $this->req->name, $this->req->enable, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $order));
+							file_put_contents('views/'.String::format_url($this->req->name).'-default_action.php', $this->req->content);
 							$this->_set_msg($new_menu, "Vos modifications ont été enregistrées");
 							$new_menu = Menu::search(array('order' => $order));
 							if (is_array($new_menu) && count($new_menu) > 0)
@@ -381,7 +382,7 @@ class admin
 							$this->site->add_message("Une erreur est survenue dans l'accès à vos données", Site::ALERT_ERROR);
 						}
 					}
-					else
+					elseif ($type == 'sous_menu')
 					{
 						$menu = Menu::load($this->req->id_menu);
 						if (is_object($menu))
@@ -393,6 +394,7 @@ class admin
 								$order = $last_sous_menu[0]->order + 1;
 							}
 							$new_sous_menu = Sous_Menu::add(array(NULL, $this->req->name, $this->req->enable, date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), $order, $this->req->id_menu));
+							file_put_contents('views/'.String::format_url($menu->name).'-'.String::format_url($this->req->name).'.php', $this->req->content);
 							$this->_set_msg($new_sous_menu, "Vos modifications ont été enregistrées");
 							$new_sous_menu = Sous_Menu::search(array('order' => $order, 'id_menu' => $this->req->id_menu));
 							if (is_array($new_sous_menu) && count($new_sous_menu) > 0)
@@ -403,6 +405,18 @@ class admin
 						else
 						{
 							$this->site->add_message("Vous ne pouvez pas créer un sous-menu sous un menu inexistant", Site::ALERT_ERROR);
+						}
+					}
+					else 
+					{
+						$date = date('Y-m-d H:i:s');
+						$new_menu = Static_Menu::add(array(NULL, $this->req->name, $date, $date));
+						file_put_contents('views/'.String::format_url($this->req->name).'-default_action.php', $this->req->content);
+						$this->_set_msg($new_menu, "Vos modifications ont été enregistrées");
+						$new_menu = Static_Menu::search(array('name' => $this->req->name, 'date_creation'=>date('Y-m-d H:i:s')));
+						if (is_array($new_menu) && count($new_menu) > 0)
+						{
+							$forward_id = $new_menu[0]->id;
 						}
 					}
 				}
