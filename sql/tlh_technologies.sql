@@ -19,6 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `tlh_technologies`
 --
+USE `tlh_technologies`;
 
 -- --------------------------------------------------------
 
@@ -61,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `name`, `enable`, `date_creation`, `date_modification`, `order`) VALUES
-(1, 'Entreprise', 1, '2014-05-13 07:08:59', '2014-05-13 07:08:59', 10),
-(2, 'Projets', 1, '2014-05-13 07:08:59', '2014-05-22 19:45:42', 1);
+(1, 'Entreprise', 1, '2014-05-13 07:08:59', '2014-05-13 07:08:59', 1),
+(2, 'Projets', 1, '2014-05-13 07:08:59', '2014-05-22 19:45:42', 2);
 
 -- --------------------------------------------------------
 
@@ -88,9 +89,9 @@ CREATE TABLE IF NOT EXISTS `sous_menu` (
 
 INSERT INTO `sous_menu` (`id`, `name`, `enable`, `date_creation`, `date_modification`, `order`, `id_menu`) VALUES
 (1, 'Historique', 1, '2014-05-13 09:17:36', '2014-05-13 09:17:36', 1, 1),
-(2, 'Expertise', 1, '2014-05-13 09:17:36', '2014-05-13 09:17:36', 0, 1),
-(3, 'Equipe', 1, '2014-05-13 09:17:36', '2014-05-13 09:17:36', 0, 1),
-(4, 'LaPromoDuCoin', 1, '2014-05-13 09:17:36', '2014-05-22 21:45:06', 0, 2);
+(2, 'Expertise', 1, '2014-05-13 09:17:36', '2014-05-13 09:17:36', 2, 1),
+(3, 'Equipe', 1, '2014-05-13 09:17:36', '2014-05-13 09:17:36', 3, 1),
+(4, 'LaPromoDuCoin', 1, '2014-05-13 09:17:36', '2014-05-22 21:45:06', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -104,14 +105,16 @@ CREATE TABLE IF NOT EXISTS `static_menu` (
   `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modification` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `static_menu`
 --
 
 INSERT INTO `static_menu` (`id`, `name`, `date_creation`, `date_modification`) VALUES
-(1, 'Home', '2014-05-21 16:04:51', '2014-05-22 19:46:21');
+(1, 'Accueil', '2014-05-21 16:04:51', '2014-05-22 19:46:21'),
+(2, 'Aide', '2014-05-21 16:04:51', '2014-05-22 19:46:21'),
+(3, 'En savoir plus', '2014-05-21 16:04:51', '2014-05-22 19:46:21');
 
 --
 -- Contraintes pour les tables exportées
