@@ -5,9 +5,11 @@ class recherche
 	{
 		if (empty($this->req->keywords))
 		{
-			
+			$this->site->add_message("Aucun mot clé n'a été saisi", Site::ALERT_INFO);
+			$this->site->redirect($this->site->get_root());
 		}	
 		
+		$links = array();
 		$dir = 'views/';
 		$excluded = array('.', '..', 
 			'navigation_menu-init.php', 
@@ -18,7 +20,7 @@ class recherche
 			'rechercher-default_action.php'
 		);
 		$templates = array_diff(scandir($dir), $excluded);
-		$finded = array();
+		$found = array();
 		$words = explode(' ', str_replace('%20', ' ', $this->req->keywords));
 		$words_count = count($words);
 		foreach ($templates as $t)
@@ -28,26 +30,34 @@ class recherche
 			{
 				if (strpos($content, $words[$i]) !== FALSE)
 				{
-					$finded[] = $t;
+					$found[] = $t;
 					$i = $words_count;
 				}
 			}
 			
 		}
-		$count = count($finded);
+		
+		$count = count($found);
 		if ($count > 0)
 		{
-			$links = array();
 			$root = $this->site->get_root();
 			$menu = Menu::search();
 			$sous_menu = Sous_Menu::search();
-			foreach ($finded as $f)
+			$static_menu = Static_Menu::search();
+			foreach ($found as $f)
 			{
 				$pos = strpos($f, '-');
 				$controller = substr($f, 0, $pos);
 				$action = substr($f, $pos + 1, -4);
 				$parent_name = NULL;
 				foreach ($menu as $m)
+				{
+					if (String::format_url($m->name) == $controller)
+					{
+						$parent_name = $m->name;
+					}
+				}
+				foreach ($static_menu as $m)
 				{
 					if (String::format_url($m->name) == $controller)
 					{
@@ -76,9 +86,9 @@ class recherche
 					'parent_name' => $parent_name
 				);
 			}
-			$this->view->links = $links;
-			$this->view->nb_links = count($links);
 		}
+		$this->view->links = $links;
+		$this->view->nb_links = (is_array($links)) ? count($links) : 0;
 	}
 }
 ?>

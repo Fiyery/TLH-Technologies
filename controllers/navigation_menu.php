@@ -9,6 +9,7 @@ class navigation_menu
 		{
 			$menus = Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>'order'));
 			$sous_menus = Sous_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>'order'));
+			$static_menus = Static_Menu::search(NULL, NULL, NULL, NULL, array('ASC'=>'id'));
 			$list_links = array();
 			$root = $this->site->get_root();
 			foreach ($menus as $m)
@@ -38,6 +39,7 @@ class navigation_menu
 			$list_links = $vars['list_links'];
 		}
 		$this->view->list_links = $list_links;
+		$this->view->static_menus = $static_menus;
 	}
 }
 ?>
