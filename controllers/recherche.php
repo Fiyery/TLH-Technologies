@@ -5,7 +5,7 @@ class recherche
 	{
 		if (empty($this->req->keywords))
 		{
-			$this->site->add_message("Aucun mot clé n'a été saisie", Site::ALERT_INFO);
+			$this->site->add_message("Aucun mot clÃ© n'a Ã©tÃ© saisi", Site::ALERT_INFO);
 			$this->site->redirect($this->site->get_root());
 		}	
 		

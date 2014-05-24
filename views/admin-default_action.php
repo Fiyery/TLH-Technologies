@@ -1,5 +1,5 @@
-<div class="content center large">
-	<h1>Veuillez saisir vos identifiants</h1>
+<h1>Veuillez saisir vos identifiants</h1>
+<div class="center large">
 	<form action='<?= $root_www ?>admin/connection/' method='post'>
 		<div class="row">
 			<div class="col-xs-4 lbl"><span>Login<span></div>

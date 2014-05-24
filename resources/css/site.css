@@ -102,8 +102,15 @@ table tbody tr:hover td	{	color: #ff9700; background: #ffffff;	}
 .msg_box.error	{	border: 1px solid #ff2300; color: #ff2300;	}
 .msg_box.info	{	border: 1px solid #0c5aa6; color: #0c5aa6;	}
 
+/*	Resultat de la recherche	*/
+.result	{	margin-top: 4px; padding: 4px 8px; background: url("../img/design/bg_body.png") repeat repeat top left #6794d2;	}
+.result:first-child	{	margin-top: 0px;	}
+.result:hover	{	background-color: #00db39;	}
+.result:hover .mainlink	{	background: transparent;	}	
+
 /*	Inline-content	*/
 .center	{	text-align: center;	}
+.content .center.large	{	width: 400px; margin: 0px auto;	}
 
 /*	Jumbotron	*/
 .jumbotron .container .row > div	{	padding: 0px;	}
@@ -172,8 +179,6 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #MainContent	{	min-height: 100%; padding: 0px;	}
 #MainContent .content	{	position: relative; margin: 0px 0px 16px; padding: 8px 16px; text-align: justify;
 							border: 1px solid #ff9700; color: #333333; background: #ffffff;	}
-#MainContent .content.center	{	margin: 0px auto;	}
-#MainContent .content.center.large	{	width: 400px;	}
 #MainContent .content .absTopRight	{	position: absolute; top: 8px; right: 16px;	}
 #MainContent .content .mainlink	{	display: inline-block; width: auto; padding: 0px;	}
 #MainContent .content .mainlink.icon	{	 padding-left: 24px; background-position: 3px center;	}
