@@ -10,17 +10,7 @@
 		<h1>Propriétés du menu</h1>
 		
 		<div class="row">
-<<<<<<< HEAD
-			<div class="col-xs-12 col-sm-6 col-lg-4">
-				<div class="row">
-					<div class="col-xs-4 lbl"><span>Nom<span></div>
-					<div class="col-xs-6 col-sm-8"><input name="name" value="<?= ((isset($data)) ? $data->name : "") ?>" type="text"/></div>
-				</div>
-			</div>
-			<?php if ($type == 'menu' || $type == 'sous_menu'): ?>
-=======
 			<?php if (isset($data->enable)): ?>
->>>>>>> origin/master
 				<div class="col-xs-12 col-sm-6 col-lg-4">
 					<div class="row">
 						<div class="col-xs-4 lbl"><span>Nom<span></div>
@@ -39,9 +29,7 @@
 					</div>
 				</div>
 			<?php endif; ?>
-			
 			<?php if (isset($menus)) : ?>
-			
 				<div class="col-xs-12 col-sm-6 col-lg-4">
 					<div class="row">
 						<div class="col-xs-4 lbl"><span>Parent<span></div>
@@ -63,9 +51,7 @@
 						</div>
 					</div>
 				</div>
-			
 			<?php endif; ?>
-			
 		</div>
 		<div class="row"><div class="col-xs-12 submit"><input type='submit' value='Valider'></div></div>
 	</div>

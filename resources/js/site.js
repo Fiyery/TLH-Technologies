@@ -1,6 +1,6 @@
 function load_ajax_navigation() {
 	var ajax = {};
-	ajax.content_selector = '#MainContent div.content';
+	ajax.content_selector = '#MainContent';
 	ajax.localhost_dir = 'TLH-Technologies/';
 	
 	ajax.get_root = function(){
@@ -44,6 +44,9 @@ function load_ajax_navigation() {
 				if (content.length > 0) {
 					data = content.html();
 					url = page.constructor.ajaxSettings.url;
+				}
+				else {
+					data = '<div class="content">' + data + '</div>';
 				}
 				$(ajax.content_selector).fadeOut(function() {
 					$(this).empty().append(data).fadeIn(300, function(){
