@@ -10,7 +10,17 @@
 		<h1>Propriétés du menu</h1>
 		
 		<div class="row">
+<<<<<<< HEAD
+			<div class="col-xs-12 col-sm-6 col-lg-4">
+				<div class="row">
+					<div class="col-xs-4 lbl"><span>Nom<span></div>
+					<div class="col-xs-6 col-sm-8"><input name="name" value="<?= ((isset($data)) ? $data->name : "") ?>" type="text"/></div>
+				</div>
+			</div>
+			<?php if ($type == 'menu' || $type == 'sous_menu'): ?>
+=======
 			<?php if (isset($data->enable)): ?>
+>>>>>>> origin/master
 				<div class="col-xs-12 col-sm-6 col-lg-4">
 					<div class="row">
 						<div class="col-xs-4 lbl"><span>Nom<span></div>

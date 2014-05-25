@@ -3,12 +3,11 @@ function load_ajax_navigation() {
 	ajax.content_selector = '#MainContent div.content';
 	ajax.localhost_dir = 'TLH-Technologies/';
 	
-	if (!window.location.origin) {
-		window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
-	}
-	
 	ajax.get_root = function(){
 		if (!ajax.root) {
+			if (!window.location.origin) {
+				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+			}
 			if (window.location.hostname == '127.0.0.1' || window.location.hostname == 'localhost') {
 				ajax.root = window.location.origin + '/' + ajax.localhost_dir;
 			} else {
@@ -19,7 +18,9 @@ function load_ajax_navigation() {
 	};
 	
 	ajax.change_address = function(url){
-		window.history.pushState('', '', url);
+		if(window.history && typeof window.history.pushState == 'function') {
+			window.history.pushState('', '', url);
+		} 
 	};
 	
 	ajax.is_ancre = function(url){
@@ -46,11 +47,11 @@ function load_ajax_navigation() {
 				}
 				$(ajax.content_selector).fadeOut(function() {
 					$(this).empty().append(data).fadeIn(300, function(){
-						ajax.init();
+						// Réattribution du traitement sur les liens.
+						ajax.handler_link();
 					});
 				});
 				ajax.change_address(url);
-				// Réattribution du traitement sur les liens.
 				
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR, textStatus, errorThrown);
@@ -59,10 +60,21 @@ function load_ajax_navigation() {
 		return false;
 	};
 	
-	ajax.init = function(){
-		$('a').on('click', function() {
+	ajax.handler_link = function(){
+		$('a').off('click').on('click', function() {
 			return ajax.load($(this).attr('href'));
 		});
+	};
+	
+	ajax.handler_browser = function(){
+		$(window).on("popstate", function(e) {
+			ajax.load(e.target.location.href);
+		});
+	};
+	
+	ajax.init = function(){
+		ajax.handler_link();
+		ajax.handler_browser();
 	};
 	
 	ajax.init();
@@ -70,7 +82,8 @@ function load_ajax_navigation() {
 };
 
 $(document).ready(function() {
-	var ajax = load_ajax_navigation();
+	setTimeout('load_ajax_navigation()', 1);
+	
 	$("#SearchBox .icon.search").click(function() {
 		var uri = $("#SearchBox .hide").val() + "?keywords=" + encodeURIComponent($("#SearchBox .data").val());
 		$("#SearchBox a").attr("href", uri);
@@ -82,6 +95,4 @@ $(document).ready(function() {
 			$("#SearchBox .icon.search").click();
 		}
 	});
-	
-	window.onhashchange = function() {	console.log(ajax);	};
 });
