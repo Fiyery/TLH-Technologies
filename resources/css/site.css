@@ -9,10 +9,12 @@ ul	{	margin: 0px; padding: 0px; list-style: none; text-align: left;	}
 ul li a	{	display: block; padding: 4px 15px; font-size: 16px; color: #0eb0e2;	}
 ul li a:visited	{	color: #0eb0e2;	}
 ul li a:hover	{	text-decoration: none; color: #ff9700; background-color: #ffffff;	}
-ul.categories	{	 position: absolute; top: 100%; left: 0px; right: 0px; border: 1px solid #ff9700; border-top: none; background: url("../img/design/bg_menu.png") repeat repeat top left;	}
+ul.categories	{	position: absolute; top: 100%; left: 0px; right: 0px; border: 1px solid #ff9700; border-top: none;
+					background: url("../img/design/bg_menu.png") repeat repeat top left;	}
 ul.categories li.categorie	{	position: relative;	}
 ul.categories li.categorie div.onHover	{	position: absolute; top: 0px; left: 100%; width: 150px;	}
-ul.subcategories	{	position: absolute; top: 100%; left: 0px; right: 0px; border: 1px solid #ff9700; margin-top: -1px; background: url("../img/design/bg_menu.png") repeat repeat top left;	}
+ul.subcategories	{	position: absolute; top: 100%; left: 0px; right: 0px; border: 1px solid #ff9700; margin-top: -1px;
+					background: url("../img/design/bg_menu.png") repeat repeat top left;	}
 li.categorie:first-child ul.subcategories	{	border-top: none; margin: 0px;	}
 
 /*	Forms	*/
@@ -103,10 +105,15 @@ table tbody tr:hover td	{	color: #ff9700; background: #ffffff;	}
 .msg_box.info	{	border: 1px solid #0c5aa6; color: #0c5aa6;	}
 
 /*	Resultat de la recherche	*/
-.result	{	margin-top: 4px; padding: 4px 8px; background: url("../img/design/bg_body.png") repeat repeat top left #6794d2;	}
+.result	{	margin-top: 4px; padding: 4px 8px;	}
 .result:first-child	{	margin-top: 0px;	}
-.result:hover	{	background-color: #00db39;	}
-.result:hover .mainlink	{	background: transparent;	}	
+.result:hover	{	background: url("../img/design/bg_body.png") repeat repeat top left #00db39;	}
+.result:hover .mainlink	{	background: transparent;	}
+.result .url,
+.result .sublink,
+.result .sublink:visited	{	 color: #0eb0e2;	}
+.result .sublink:hover	{	 color: #ff9700; text-decoration: none;	}
+
 
 /*	Inline-content	*/
 .center	{	text-align: center;	}

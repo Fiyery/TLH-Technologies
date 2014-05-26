@@ -1,27 +1,23 @@
 <h1>Résultat de la recherche</h1>
-<?php if ($links != null) : ?>
-	<?php foreach ($links as $item) : ?>
-		<?php if (!empty($item["name"]) && !empty($item["link"])) : ?>
-			<div class="result">
-				<a href="<?= $item["link"] ?>" class="mainlink">
-					<?= !empty($item["parent_name"]) ? $item["parent_name"]. " - " : "" ?>
-					<?= $item["name"] ?>
-				</a>
-				<br/>
-				<a href="<?= $item["link"] ?>"><?= $item["link"] ?></a>
-				<?php if (!empty($item["parent_name"]) && !empty($item["parent_link"])) : ?>
+<div class="row">
+	<div class="col-xs-12 col-sm-6">
+		<?php if ($links != null) : ?>
+			<?php foreach ($links as $item) : ?>
+				<?php if (!empty($item["name"]) && !empty($item["link"])) : ?>
+				<div class="result">
+					<a href="<?= $item["link"] ?>" class="mainlink"><?= $item["name"] ?></a>
 					<br/>
-					<br/>
-					<a href="<?= $item["parent_link"] ?>" class="mainlink">
-						Atteindre l'élément parent > 
-						<?= $item["parent_name"] ?>
-					</a>
-					<br/>
-					<a href="<?= $item["parent_link"] ?>"><?= $item["parent_link"] ?></a>
+					<span class="url"><?= $item["link"] ?></span>
+					<?php if (!empty($item["parent_name"]) && !empty($item["parent_link"])) : ?>
+						<br/>
+						<span>Cette page est une rubrique de la catégorie</span>
+						<a href="<?= $item["parent_link"] ?>" class="sublink"><?= $item["parent_name"] ?></a>
+					<?php endif ?>
+				</div>
 				<?php endif ?>
-			</div>
+			<?php endforeach ?>
+		<?php else : ?>
+			<span>Aucun élément ne correspond à votre recherche</span>
 		<?php endif ?>
-	<?php endforeach ?>
-<?php else : ?>
-	<span>Aucun élément ne correspond à votre recherche</span>
-<?php endif ?>
+	</div>
+</div>
