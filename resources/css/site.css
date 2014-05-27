@@ -205,3 +205,28 @@ body	{	position: relative; height: 100%; font-size: 12px;
 #Footer a,
 #Footer a:visited	{	color: #aaaaaa;	}
 #Footer a:hover	{	color: #ffffff;	}
+
+/* Logos expertise */
+#expertise_logos  {
+	text-align:center;
+}
+#expertise_logos img {
+	max-width:100px;
+	max-height:60px;
+	padding:0px 10px 0px 10px;
+}
+/* Screen Projet LaPromoDuCoin */
+#screen_lapromoducoin {
+	float:left;
+	width:200px;
+	padding: 0px 10px;
+}
+/* Liste projet */
+#list_projets img {
+	width:100px;
+}
+#list_projets div {
+	width:115px;
+	padding:5px;
+	border:2px solid #ff9700;
+}
